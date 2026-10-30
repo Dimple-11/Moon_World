@@ -1,0 +1,313 @@
+/* hero.css - Anime-Inspired Interactive Character Hero Section */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: calc(85vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem 5rem 2rem;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  user-select: none;
+  z-index: 2;
+}
+
+.hero-container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 48% 52%;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* =========================================
+   Left Column: Personal Introduction
+   ========================================= */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+  z-index: 2;
+}
+
+.hero-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.eyebrow-icon {
+  color: var(--accent-pink);
+}
+
+.hero-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.8rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.status-ping {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+.hero-title {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(2.35rem, 3.6vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.hero-description {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 520px;
+}
+
+.hero-highlight-name {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+/* Quick Stats Pills */
+.hero-quick-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stat-icon {
+  color: var(--accent-pink);
+}
+
+/* =========================================
+   Right Column: Interactive Character
+   ========================================= */
+.hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  cursor: crosshair;
+}
+
+/* Character stage: 42-48vw, max 620px, min 420px */
+.character-stage {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  min-width: 420px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  border-radius: 22px;
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.character-ambient-glow {
+  position: absolute;
+  inset: -20%;
+  background: var(--stage-glow);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Canvas Wrapper */
+.interactive-character-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  z-index: 2;
+}
+
+.character-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background-color: #FFFFFF;
+  transition: opacity 0.25s ease;
+}
+
+.character-canvas.is-visible {
+  opacity: 1;
+}
+
+.character-canvas.is-hidden {
+  opacity: 0;
+}
+
+/* Instant poster fallback */
+.character-poster-skeleton,
+.character-error-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  z-index: 1;
+}
+
+.character-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background-color: #FFFFFF;
+}
+
+/* =========================================
+   Responsive Breakpoints
+   ========================================= */
+@media (max-width: 1080px) {
+  .hero-container {
+    grid-template-columns: 46% 54%;
+    gap: 1.5rem;
+  }
+
+  .character-stage {
+    min-width: 360px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 868px) {
+  .hero-section {
+    padding: 3.5rem 1.5rem 4rem 1.5rem;
+    min-height: auto;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .hero-left {
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .hero-eyebrow-row {
+    justify-content: center;
+  }
+
+  .hero-description {
+    max-width: 580px;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
+  .hero-quick-stats {
+    justify-content: center;
+  }
+
+  .character-stage {
+    max-width: 520px;
+    min-width: 280px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 2.5rem 1rem 3.5rem 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.95rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .hero-cta-group {
+    width: 100%;
+    flex-direction: column;
+  }
+}

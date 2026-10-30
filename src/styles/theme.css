@@ -1,0 +1,130 @@
+/* theme.css - DIMPLE'S WORLD Design System Tokens & Typography */
+
+:root {
+  /* Typography Families */
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-accent: 'Caveat', cursive, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace, sans-serif;
+
+  /* Editorial & Vintage Scrapbook Accents */
+  --scrapbook-paper: #FAF6F0;
+  --scrapbook-border: rgba(146, 118, 201, 0.22);
+  --scrapbook-shadow: 0 10px 30px -10px rgba(74, 58, 89, 0.12);
+  --stamp-red: #D96570;
+  --plum-deep: #4A2B4B;
+}
+
+:root, [data-theme="light"] {
+  --theme-name: 'sakura-dream';
+  
+  /* Backgrounds */
+  --bg-primary: #FCEEF2;
+  --bg-secondary: #F5F0FF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --bg-card-subtle: #FAFAFC;
+  --bg-glass: rgba(255, 255, 255, 0.82);
+  --bg-glass-strong: rgba(255, 255, 255, 0.94);
+  --nav-bg: rgba(252, 238, 242, 0.90);
+
+  /* Typography */
+  --text-primary: #29243D;
+  --text-secondary: #80677D;
+  --text-muted: #A38DA0;
+
+  /* Accents & Highlights */
+  --accent-primary: #9276C9;
+  --accent-hover: #8061B8;
+  --accent-pink: #E9A6C4;
+  --accent-mauve: #C18AAE;
+  --accent-violet: #51436F;
+  --accent-glow: rgba(233, 166, 196, 0.35);
+
+  /* Borders & Dividers */
+  --border-color: #EBD9E8;
+  --border-subtle: #F3E5F1;
+  --border-focus: #9276C9;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(81, 67, 111, 0.05);
+  --shadow-md: 0 8px 24px rgba(81, 67, 111, 0.08);
+  --shadow-lg: 0 16px 40px rgba(81, 67, 111, 0.12);
+  --shadow-glow: 0 0 25px rgba(233, 166, 196, 0.45);
+
+  /* Canvas Stage */
+  --stage-bg: #FFFFFF;
+  --stage-border: #EBD9E8;
+  --stage-glow: radial-gradient(circle at 50% 50%, rgba(233, 166, 196, 0.22) 0%, transparent 70%);
+
+  /* Modal & Petals */
+  --modal-overlay: rgba(41, 36, 61, 0.55);
+  --petals-opacity: 0.85;
+
+  /* Mochi & Player */
+  --widget-bg: #FFFFFF;
+  --widget-border: #EBD9E8;
+  --widget-shadow: 0 10px 30px rgba(81, 67, 111, 0.12);
+}
+
+[data-theme="dark"] {
+  --theme-name: 'midnight-sakura';
+
+  /* Backgrounds */
+  --bg-primary: #171321;
+  --bg-secondary: #282039;
+  --bg-card: #211B2E;
+  --bg-card-hover: #2B233C;
+  --bg-card-subtle: #1C1727;
+  --bg-glass: rgba(33, 27, 46, 0.82);
+  --bg-glass-strong: rgba(33, 27, 46, 0.95);
+  --nav-bg: rgba(23, 19, 33, 0.92);
+
+  /* Typography */
+  --text-primary: #F9EAF7;
+  --text-secondary: #C1B0CE;
+  --text-muted: #8E7D9E;
+
+  /* Accents & Highlights */
+  --accent-primary: #A88AE0;
+  --accent-hover: #BEA4F2;
+  --accent-pink: #D77AB6;
+  --accent-mauve: #B8679A;
+  --accent-violet: #6D5094;
+  --accent-deep-purple: #49345F;
+  --accent-glow: rgba(215, 122, 182, 0.32);
+
+  /* Borders & Dividers */
+  --border-color: #40344F;
+  --border-subtle: #30263C;
+  --border-focus: #A88AE0;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 16px 45px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 30px rgba(168, 138, 224, 0.35);
+
+  /* Canvas Stage */
+  --stage-bg: #FFFFFF;
+  --stage-border: #40344F;
+  --stage-glow: radial-gradient(circle at 50% 50%, rgba(215, 122, 182, 0.25) 0%, transparent 70%);
+
+  /* Modal & Petals */
+  --modal-overlay: rgba(10, 8, 15, 0.80);
+  --petals-opacity: 0.55;
+
+  /* Mochi & Player */
+  --widget-bg: #211B2E;
+  --widget-border: #40344F;
+  --widget-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Global Transitions for Theme Change */
+body, .theme-transition {
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}

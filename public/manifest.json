@@ -1,0 +1,17 @@
+{
+  "name": "Dimple's World – The Creative Universe of Dimple",
+  "short_name": "Dimple's World",
+  "description": "Where code meets creativity, and every pixel has a story. Personal portfolio of Dimple, Information Technology at IGDTUW.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FCEEF2",
+  "theme_color": "#FCEEF2",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
