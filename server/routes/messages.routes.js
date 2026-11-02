@@ -57,6 +57,7 @@ router.post('/', async (req, res) => {
 
       return res.status(201).json({
         success: true,
+        storage: 'mongodb',
         message: 'Your message has been received! Dimple will reply soon. 🌸',
         id: savedMessage._id
       });
@@ -78,6 +79,7 @@ router.post('/', async (req, res) => {
 
     return res.status(201).json({
       success: true,
+      storage: 'memory',
       message: 'Your message has been received! Dimple will reply soon. 🌸',
       id: newMsg._id
     });

@@ -116,7 +116,7 @@ export default function AdminGallery() {
           items.map((photo) => (
             <div key={photo._id} className="admin-photo-card">
               <div className="photo-frame">
-                <img src={photo.imageUrl} alt={photo.title} className="photo-img" />
+                <img src={photo.imageUrl} alt={photo.title} className="photo-img" loading="lazy" decoding="async" />
                 {photo.isFeatured && (
                   <span className="featured-badge" title="Featured on website homepage">
                     <Sparkles size={11} /> Featured
@@ -179,7 +179,7 @@ export default function AdminGallery() {
                   onChange={(e) => setImageUrl(e.target.value)}
                 />
                 {imageUrl && (
-                  <img src={imageUrl} alt="Preview" className="photo-upload-preview" />
+                  <img src={imageUrl} alt="Preview" className="photo-upload-preview" decoding="async" />
                 )}
               </div>
 

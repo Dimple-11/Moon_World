@@ -4,9 +4,19 @@
   /* Typography Families */
   --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-main: var(--font-body);
   --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --font-accent: 'Caveat', cursive, sans-serif;
   --font-mono: 'JetBrains Mono', monospace, sans-serif;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
 
   /* Editorial & Vintage Scrapbook Accents */
   --scrapbook-paper: #FAF6F0;
@@ -39,6 +49,7 @@
   --accent-hover: #8061B8;
   --accent-pink: #E9A6C4;
   --accent-mauve: #C18AAE;
+  --accent-lavender: #A78BFA;
   --accent-violet: #51436F;
   --accent-glow: rgba(233, 166, 196, 0.35);
 
@@ -91,6 +102,7 @@
   --accent-hover: #BEA4F2;
   --accent-pink: #D77AB6;
   --accent-mauve: #B8679A;
+  --accent-lavender: #B39DDB;
   --accent-violet: #6D5094;
   --accent-deep-purple: #49345F;
   --accent-glow: rgba(215, 122, 182, 0.32);

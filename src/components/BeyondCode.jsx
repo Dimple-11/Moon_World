@@ -1,32 +1,10 @@
 import React from 'react';
 import { Sparkles, Palette, MessageSquareText, Users, Compass, Megaphone, ArrowUpRight } from 'lucide-react';
-import { personalInfo } from '../data/portfolioData';
+import { creativePillars } from '../data/portfolioData';
+
+const pillarIcons = [Palette, MessageSquareText, Users];
 
 export default function BeyondCode() {
-  const creativePillars = [
-    {
-      icon: Palette,
-      tag: 'Creative Direction',
-      title: 'Digital Media & Visual Experiences',
-      desc: 'Merging design sensibilities with code. Crafting cohesive visual identities, responsive branding, and aesthetic digital media at Aevona Solutions.',
-      accent: 'Media & Tech'
-    },
-    {
-      icon: MessageSquareText,
-      tag: 'Content & Editorial',
-      title: 'Technical Storytelling',
-      desc: 'Leading content initiatives at TechNeeds. Demystifying complex machine learning and engineering concepts into engaging, accessible narratives for builders.',
-      accent: 'Leadership'
-    },
-    {
-      icon: Users,
-      tag: 'Community Growth',
-      title: 'Campus Leadership & Mentorship',
-      desc: 'Inspiring peers as an Unstop Campus Ambassador. Organizing hackathon briefings, connecting students to opportunities, and cultivating engineering curiosity.',
-      accent: 'Community'
-    }
-  ];
-
   return (
     <section className="section-wrap beyond-section" id="beyond">
       <div className="section-container">
@@ -47,7 +25,7 @@ export default function BeyondCode() {
         {/* Pillars Grid */}
         <div className="beyond-cards-grid">
           {creativePillars.map((pillar, idx) => {
-            const Icon = pillar.icon;
+            const Icon = pillarIcons[idx] || Sparkles;
             return (
               <div key={idx} className="beyond-card">
                 <div className="beyond-card-header">

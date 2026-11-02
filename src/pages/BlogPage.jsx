@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Search, ArrowRight, Calendar, Clock, Sparkles, Tag } from 'lucide-react';
-import { initialBlogs } from '../../server/seedData.js';
+import { initialBlogs } from '../data/fallbackContent.js';
 
 const CATEGORIES = [
   'All',
@@ -92,7 +92,7 @@ export default function BlogPage() {
           {featured && !search && activeCategory === 'All' && (
             <div className="blog-featured-card">
               <div className="featured-cover-column">
-                <img src={featured.coverImage} alt={featured.title} className="featured-cover-img" />
+                <img src={featured.coverImage} alt={featured.title} className="featured-cover-img" loading="lazy" decoding="async" />
                 <span className="featured-badge">Featured Story</span>
               </div>
               <div className="featured-content-column">
@@ -125,7 +125,7 @@ export default function BlogPage() {
             {(search || activeCategory !== 'All' ? blogs : regularList).map((post) => (
               <article key={post._id} className="blog-post-card">
                 <Link to={`/blog/${post.slug}`} className="post-card-cover-wrap">
-                  <img src={post.coverImage} alt={post.title} className="post-card-img" />
+                  <img src={post.coverImage} alt={post.title} className="post-card-img" loading="lazy" decoding="async" />
                   <span className="post-cat-badge">{post.category}</span>
                 </Link>
 

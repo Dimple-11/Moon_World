@@ -337,7 +337,7 @@ export default function MusicPlayer({ isForceOpen = false, onCloseForce }) {
         <div className="music-dock-collapsed" onClick={() => setIsExpanded(true)}>
           {/* Mini Album Art / Rotating Vinyl */}
           <div className={`mini-album-art ${isPlaying ? 'is-spinning' : ''}`}>
-            <img src={currentTrack.cover} alt={currentTrack.title} />
+            <img src={currentTrack.cover} alt={currentTrack.title} loading="lazy" decoding="async" />
             <div className="mini-disc-center" />
           </div>
 
@@ -410,7 +410,7 @@ export default function MusicPlayer({ isForceOpen = false, onCloseForce }) {
           <div className="music-stage">
             <div className={`vinyl-turntable-wrapper ${isPlaying ? 'is-playing' : ''}`}>
               <div className="vinyl-grooves">
-                <img src={currentTrack.cover} alt={currentTrack.title} className="vinyl-center-art" />
+                <img src={currentTrack.cover} alt={currentTrack.title} className="vinyl-center-art" loading="lazy" decoding="async" />
                 <div className="vinyl-spindle" />
               </div>
             </div>
@@ -555,7 +555,7 @@ export default function MusicPlayer({ isForceOpen = false, onCloseForce }) {
                       }}
                     >
                       <div className="playlist-item-left">
-                        <img src={track.cover} alt={track.title} className="playlist-thumb" />
+                        <img src={track.cover} alt={track.title} className="playlist-thumb" loading="lazy" decoding="async" />
                         <div className="playlist-names">
                           {isEditing ? (
                             <div className="playlist-edit-row" onClick={(e) => e.stopPropagation()}>

@@ -8,13 +8,40 @@ export default function InteractiveCharacter({
   idleFrame = 0
 }) {
   const canvasRef = useRef(null);
+  const wrapperRef = useRef(null);
   const animatorRef = useRef(null);
   const [isReady, setIsReady] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
 
-  // Initialize Animator
+  // Defer the (heavy) atlas download until the character is near the viewport.
+  // The poster below stays visible in the meantime so there is never an empty gap.
   useEffect(() => {
-    if (!canvasRef.current) return;
+    const el = wrapperRef.current;
+    if (!el) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Initialize Animator once the character is close to the viewport
+  useEffect(() => {
+    if (!shouldLoad || !canvasRef.current) return;
 
     const animator = new CharacterAnimator({
       canvas: canvasRef.current,
@@ -42,7 +69,7 @@ export default function InteractiveCharacter({
       animator.destroy();
       animatorRef.current = null;
     };
-  }, [idleFrame, onFrameUpdate]);
+  }, [shouldLoad, idleFrame, onFrameUpdate]);
 
   // Handle pointer tracking relative to containerRef (full hero) or wrapper
   const handlePointerMove = useCallback((e) => {
@@ -94,6 +121,7 @@ export default function InteractiveCharacter({
 
   return (
     <div
+      ref={wrapperRef}
       className={`interactive-character-wrapper ${className}`}
       onMouseMove={!containerRef ? handlePointerMove : undefined}
       onMouseEnter={!containerRef ? handlePointerEnter : undefined}
@@ -116,6 +144,7 @@ export default function InteractiveCharacter({
             src="/assets/dimpuru/poster.webp"
             alt="Dimpuru character"
             className="character-poster-img"
+            decoding="async"
           />
         </div>
       )}

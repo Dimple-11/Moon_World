@@ -1,0 +1,350 @@
+/* Responsive Breakpoints */
+
+/* =========================================================
+   Responsive Breakpoints
+   ========================================================= */
+@media (max-width: 1024px) {
+  .about-overview-card {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 1500px) {
+  .brand-tag {
+    display: none;
+  }
+}
+
+@media (max-width: 1400px) {
+  .palette-kbd-hint {
+    display: none;
+  }
+
+  /* Hide the standalone GitHub icon before the nav gets tight */
+  .header-actions > a.action-icon-btn {
+    display: none;
+  }
+}
+
+/* Collapse to the drawer while there is still comfortable room for every link */
+@media (max-width: 1280px) {
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .theme-toggle-label {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-wrap {
+    padding: 4.5rem 1.5rem;
+  }
+
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .action-icon-btn,
+  .theme-toggle-btn,
+  .mobile-hamburger-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-nav-cta {
+    display: none;
+  }
+
+  .header-inner {
+    padding: 0 1rem;
+  }
+
+  .brand-name {
+    font-size: 0.95rem;
+  }
+
+  .header-actions {
+    gap: 0.4rem;
+  }
+
+  .theme-toggle-btn {
+    padding: 0.45rem 0.55rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row-duo {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-showcase-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================================
+   ROUTE SUSPENSE LOADER
+   ========================================================= */
+.page-suspense-loader {
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.sakura-loader {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  animation: sakuraLoaderSpin 3.2s linear infinite;
+}
+
+.sakura-loader-petal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 19px;
+  margin: -9.5px 0 0 -7px;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-primary));
+  border-radius: 62% 62% 58% 58% / 72% 72% 38% 38%;
+  transform-origin: 50% 105%;
+  opacity: 0.85;
+  animation: sakuraLoaderPulse 2.4s ease-in-out infinite;
+}
+
+.sakura-loader-petal:nth-child(1) { transform: rotate(0deg) translateY(-14px); }
+.sakura-loader-petal:nth-child(2) { transform: rotate(90deg) translateY(-14px); animation-delay: 0.3s; }
+.sakura-loader-petal:nth-child(3) { transform: rotate(180deg) translateY(-14px); animation-delay: 0.6s; }
+.sakura-loader-petal:nth-child(4) { transform: rotate(270deg) translateY(-14px); animation-delay: 0.9s; }
+
+@keyframes sakuraLoaderSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sakuraLoaderPulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sakura-loader,
+  .sakura-loader-petal {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   SCROLL PROGRESS BAR
+   ========================================================= */
+.scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  background: transparent;
+}
+
+.scroll-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-lavender));
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor [role="button"],
+  html.has-custom-cursor input,
+  html.has-custom-cursor select,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor label {
+    cursor: none;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: multiply;
+}
+
+.custom-cursor-follower {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--accent-lavender);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s ease, width 0.2s, height 0.2s, border-color 0.2s, opacity 0.2s;
+  opacity: 0.6;
+}
+
+.cursor-sparkle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-pink);
+  pointer-events: none;
+  z-index: 99997;
+  animation: sparkle-pop 0.6s ease forwards;
+}
+
+@keyframes sparkle-pop {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0) translateY(-20px); }
+}
+
+/* =========================================================
+   SCROLL-TO-TOP BUTTON
+   ========================================================= */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-lavender));
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(232, 145, 180, 0.4);
+  z-index: 900;
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.scroll-to-top-btn.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.scroll-to-top-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(232, 145, 180, 0.55);
+}
+
+/* =========================================================
+   NAVBAR – palette trigger
+   ========================================================= */
+.palette-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.palette-kbd-hint {
+  font-size: 0.7rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  padding: 0.1rem 0.35rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .palette-kbd-hint { display: none; }
+}
+
+/* =========================================================
+   COMMAND PALETTE (live styles; old palette UI removed)
+   ========================================================= */
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease;
+}
+
+.palette-modal {
+  width: min(600px, 90vw);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.palette-search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.palette-results-list {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+

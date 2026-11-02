@@ -4,7 +4,7 @@ import {
   ArrowLeft, Calendar, Clock, Share2, Bookmark, Check,
   Sparkles, Tag, ArrowRight, User
 } from 'lucide-react';
-import { initialBlogs } from '../../server/seedData.js';
+import { initialBlogs } from '../data/fallbackContent.js';
 
 export default function BlogDetailPage() {
   const { slug } = useParams();
@@ -122,7 +122,7 @@ export default function BlogDetailPage() {
       {blog.coverImage && (
         <div className="article-cover-stage">
           <div className="cover-wrapper">
-            <img src={blog.coverImage} alt={blog.title} className="cover-img" />
+            <img src={blog.coverImage} alt={blog.title} className="cover-img" decoding="async" />
           </div>
         </div>
       )}
@@ -215,7 +215,7 @@ export default function BlogDetailPage() {
               <div className="related-grid">
                 {related.map((rel) => (
                   <Link key={rel._id} to={`/blog/${rel.slug}`} className="related-card">
-                    <img src={rel.coverImage} alt={rel.title} className="related-thumb" />
+                    <img src={rel.coverImage} alt={rel.title} className="related-thumb" loading="lazy" decoding="async" />
                     <div>
                       <span className="related-cat">{rel.category}</span>
                       <h4 className="related-heading">{rel.title}</h4>

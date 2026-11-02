@@ -32,7 +32,7 @@ export default function CertificationsPage() {
                     <Award size={22} />
                   </div>
                   <div className="cert-card-body">
-                    <h3 className="cert-title">{cert.title}</h3>
+                    <h3 className="cert-title">{cert.name}</h3>
                     <p className="cert-issuer">{cert.issuer}</p>
                     {cert.date && (
                       <span className="cert-date">
@@ -40,8 +40,8 @@ export default function CertificationsPage() {
                       </span>
                     )}
                   </div>
-                  {cert.link && (
-                    <a href={cert.link} target="_blank" rel="noreferrer" className="cert-link-btn" aria-label="View certificate">
+                  {cert.credentialUrl && cert.credentialUrl !== '#' && (
+                    <a href={cert.credentialUrl} target="_blank" rel="noreferrer" className="cert-link-btn" aria-label={`View ${cert.name} credential`}>
                       <ExternalLink size={14} />
                     </a>
                   )}

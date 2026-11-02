@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowUp, Sparkles, Heart } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
-import { personalInfo } from '../data/portfolioData';
+import BrandLogo from './BrandLogo';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export default function Footer() {
+  const { settings } = useSiteSettings();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -18,40 +21,29 @@ export default function Footer() {
           <div className="footer-brand-col">
             <div className="footer-logo-row">
               <div className="brand-sakura-icon">
-                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                  <defs>
-                    <linearGradient id="footerLogoGrad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stopColor="#E891B4" />
-                      <stop offset="100%" stopColor="#A78BFA" />
-                    </linearGradient>
-                  </defs>
-                  <rect width="28" height="28" rx="8" fill="url(#footerLogoGrad)" />
-                  <text x="5" y="21" fontFamily="Outfit,sans-serif" fontWeight="800" fontSize="18" fill="white">D</text>
-                  <circle cx="22" cy="6" r="3" fill="white" opacity="0.85" />
-                  <circle cx="22" cy="6" r="1.2" fill="url(#footerLogoGrad)" />
-                </svg>
+                <BrandLogo size={24} />
               </div>
               <div className="brand-text-wrap">
-                <span className="brand-name">DIMPLE'S WORLD</span>
-                <span className="brand-tag">THE CREATIVE UNIVERSE OF DIMPLE</span>
+                <span className="brand-name">{settings.brandName}</span>
+                <span className="brand-tag">{settings.brandSubtitle}</span>
               </div>
             </div>
             <p className="footer-brand-bio">
-              {personalInfo.tagline} An Information Technology undergraduate at IGDTUW, building AI-powered systems and creative digital experiences.
+              {settings.tagline} An Information Technology undergraduate at IGDTUW, building AI-powered systems and creative digital experiences.
             </p>
             <div className="footer-social-strip">
               <a
-                href={personalInfo.github}
+                href={settings.github}
                 target="_blank"
                 rel="noreferrer"
                 className="footer-social-icon"
                 aria-label="GitHub Profile"
-                title="GitHub: Dimple-11"
+                title="GitHub Profile"
               >
                 <GithubIcon size={17} />
               </a>
               <a
-                href={personalInfo.linkedin}
+                href={settings.linkedin}
                 target="_blank"
                 rel="noreferrer"
                 className="footer-social-icon"
@@ -61,10 +53,10 @@ export default function Footer() {
                 <LinkedinIcon size={17} />
               </a>
               <a
-                href={`mailto:${personalInfo.email}`}
+                href={`mailto:${settings.email}`}
                 className="footer-social-icon"
                 aria-label="Email Me"
-                title={`Email: ${personalInfo.email}`}
+                title={`Email: ${settings.email}`}
               >
                 <Mail size={17} />
               </a>
@@ -83,6 +75,7 @@ export default function Footer() {
               <Link to="/gallery" className="footer-nav-link">Gallery</Link>
               <Link to="/experience" className="footer-nav-link">Experience</Link>
               <Link to="/achievements" className="footer-nav-link">Honors</Link>
+              <Link to="/certifications" className="footer-nav-link">Certifications</Link>
               <Link to="/beyond-code" className="footer-nav-link">Beyond Code</Link>
               <Link to="/contact" className="footer-nav-link">Contact</Link>
               <Link to="/admin" className="footer-nav-link studio-link" title="Private Owner Dashboard">Studio 🔒</Link>

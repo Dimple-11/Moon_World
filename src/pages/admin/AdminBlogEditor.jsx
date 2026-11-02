@@ -309,7 +309,7 @@ export default function AdminBlogEditor() {
                   placeholder="https://images.unsplash.com/..."
                 />
                 {coverImage && (
-                  <img src={coverImage} alt="Cover preview" className="meta-cover-preview" />
+                  <img src={coverImage} alt="Cover preview" className="meta-cover-preview" decoding="async" />
                 )}
               </div>
 
@@ -366,7 +366,7 @@ export default function AdminBlogEditor() {
         /* Live Markdown Preview View */
         <div className="editor-preview-container">
           <div className="preview-cover-stage">
-            {coverImage && <img src={coverImage} alt={title} className="preview-cover-img" />}
+            {coverImage && <img src={coverImage} alt={title} className="preview-cover-img" loading="lazy" decoding="async" />}
             <div className="preview-meta-row">
               <span className="blog-category-tag">{category}</span>
               <span>By Dimple · {new Date().toLocaleDateString()}</span>

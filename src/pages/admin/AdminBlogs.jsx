@@ -100,7 +100,7 @@ export default function AdminBlogs() {
           filteredBlogs.map((blog) => (
             <div key={blog._id} className="admin-blog-card">
               <div className="blog-card-cover-wrap">
-                <img src={blog.coverImage} alt={blog.title} className="blog-card-cover" />
+                <img src={blog.coverImage} alt={blog.title} className="blog-card-cover" loading="lazy" decoding="async" />
                 <span className={`blog-status-badge ${blog.status}`}>
                   {blog.status}
                 </span>

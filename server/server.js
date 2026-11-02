@@ -12,6 +12,7 @@ import blogsRoutes from './routes/blogs.routes.js';
 import galleryRoutes from './routes/gallery.routes.js';
 import aiRoutes from './routes/ai.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
+import settingsRoutes from './routes/settings.routes.js';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use('/api/blogs', blogsRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // In production, serve built frontend assets if dist exists
 const distPath = path.join(__dirname, '../dist');

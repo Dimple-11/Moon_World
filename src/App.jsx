@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -12,36 +12,36 @@ import ScrollToTop from './components/ScrollToTop';
 
 // Context
 import { AdminAuthProvider } from './context/AdminAuthContext';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
-// Public Pages
+// Home is the landing route, so it stays in the initial chunk.
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import SkillsPage from './pages/SkillsPage';
-import ProjectsPage from './pages/ProjectsPage';
-import ProjectDetailPage from './pages/ProjectDetailPage';
-import ExperiencePage from './pages/ExperiencePage';
-import AchievementsPage from './pages/AchievementsPage';
-import CertificationsPage from './pages/CertificationsPage';
-import BeyondCodePage from './pages/BeyondCodePage';
-import ContactPage from './pages/ContactPage';
-import BlogPage from './pages/BlogPage';
-import BlogDetailPage from './pages/BlogDetailPage';
-import GalleryPage from './pages/GalleryPage';
-import NotFoundPage from './pages/NotFoundPage';
+
+// Every other route is loaded on demand so visitors never download the admin suite.
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const SkillsPage = lazy(() => import('./pages/SkillsPage'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
+const ExperiencePage = lazy(() => import('./pages/ExperiencePage'));
+const AchievementsPage = lazy(() => import('./pages/AchievementsPage'));
+const CertificationsPage = lazy(() => import('./pages/CertificationsPage'));
+const BeyondCodePage = lazy(() => import('./pages/BeyondCodePage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminOverview from './pages/admin/AdminOverview';
-import AdminMessages from './pages/admin/AdminMessages';
-import AdminBlogs from './pages/admin/AdminBlogs';
-import AdminBlogEditor from './pages/admin/AdminBlogEditor';
-import AdminGallery from './pages/admin/AdminGallery';
-import AdminSettings from './pages/admin/AdminSettings';
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminOverview = lazy(() => import('./pages/admin/AdminOverview'));
+const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
+const AdminBlogs = lazy(() => import('./pages/admin/AdminBlogs'));
+const AdminBlogEditor = lazy(() => import('./pages/admin/AdminBlogEditor'));
+const AdminGallery = lazy(() => import('./pages/admin/AdminGallery'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 
-import './styles/theme.css';
-import './styles/index.css';
-import './styles/hero.css';
 import { logDeveloperGreeting, triggerSakuraBurst } from './utils/sakuraBurst';
 
 // Scroll to top on route change
@@ -51,6 +51,21 @@ function RouteScrollTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
   return null;
+}
+
+// Soft sakura loader shown while a route chunk arrives
+function PageFallback() {
+  return (
+    <div className="page-suspense-loader" role="status" aria-live="polite">
+      <div className="sakura-loader" aria-hidden="true">
+        <span className="sakura-loader-petal" />
+        <span className="sakura-loader-petal" />
+        <span className="sakura-loader-petal" />
+        <span className="sakura-loader-petal" />
+      </div>
+      <p>Gathering petals…</p>
+    </div>
+  );
 }
 
 function AppInner() {
@@ -129,36 +144,38 @@ function AppInner() {
 
       {/* Main Routes */}
       <main className={isAdminRoute ? 'admin-main-wrapper' : 'public-main-wrapper'}>
-        <Routes>
-          {/* Public Views */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/skills" element={<SkillsPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-          <Route path="/experience" element={<ExperiencePage />} />
-          <Route path="/achievements" element={<AchievementsPage />} />
-          <Route path="/certifications" element={<CertificationsPage />} />
-          <Route path="/beyond-code" element={<BeyondCodePage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogDetailPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            {/* Public Views */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
+            <Route path="/beyond-code" element={<BeyondCodePage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogDetailPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
-          {/* Admin Owner Dashboard */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminOverview />} />
-            <Route path="messages" element={<AdminMessages />} />
-            <Route path="blogs" element={<AdminBlogs />} />
-            <Route path="blogs/editor" element={<AdminBlogEditor />} />
-            <Route path="gallery" element={<AdminGallery />} />
-            <Route path="settings" element={<AdminSettings />} />
-          </Route>
+            {/* Admin Owner Dashboard */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminOverview />} />
+              <Route path="messages" element={<AdminMessages />} />
+              <Route path="blogs" element={<AdminBlogs />} />
+              <Route path="blogs/editor" element={<AdminBlogEditor />} />
+              <Route path="gallery" element={<AdminGallery />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
 
-          {/* 404 Catch-All */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+            {/* 404 Catch-All */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Footer (hidden in admin studio) */}
@@ -194,9 +211,11 @@ function AppInner() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AdminAuthProvider>
-        <AppInner />
-      </AdminAuthProvider>
+      <SiteSettingsProvider>
+        <AdminAuthProvider>
+          <AppInner />
+        </AdminAuthProvider>
+      </SiteSettingsProvider>
     </BrowserRouter>
   );
 }

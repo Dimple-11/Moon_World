@@ -13,6 +13,7 @@ export default function Contact() {
 
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [persisted, setPersisted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -64,6 +65,7 @@ export default function Contact() {
       }
 
       setSubmitted(true);
+      setPersisted(data.storage === 'mongodb');
     } catch (err) {
       console.error('Contact submission error:', err);
       setSubmitError(err.message || 'Unable to connect to server. Please try again.');
@@ -186,8 +188,12 @@ export default function Contact() {
                   </div>
                   <h3 className="success-title">Message Received! 🌸</h3>
                   <p className="success-desc">
-                    Thank you, <strong>{formData.name}</strong>. Your note has been safely stored in MongoDB.
-                    I'll get back to you at <strong>{formData.email}</strong> as soon as possible.
+                    Thank you, <strong>{formData.name}</strong>.{' '}
+                    {persisted ? (
+                      <>Your note has been safely stored and I'll get back to you at <strong>{formData.email}</strong> as soon as possible.</>
+                    ) : (
+                      <>Your note reached the studio, but storage is temporarily in memory, so it will not survive a restart. For anything time-sensitive, please also email <strong>{personalInfo.email}</strong>.</>
+                    )}
                   </p>
                   <button
                     className="btn btn-secondary btn-sm"
@@ -280,7 +286,7 @@ export default function Contact() {
                     disabled={submitting}
                   >
                     {submitting ? (
-                      <span>Sending note to MongoDB...</span>
+                      <span>Sending your note...</span>
                     ) : (
                       <>
                         <Send size={16} />

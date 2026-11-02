@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Sun, Moon, FileText, Menu, X, Search } from 'lucide-react';
 import { GithubIcon } from './BrandIcons';
-import { personalInfo } from '../data/portfolioData';
+import BrandLogo from './BrandLogo';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -13,6 +14,7 @@ const navLinks = [
   { label: 'Gallery', to: '/gallery' },
   { label: 'Experience', to: '/experience' },
   { label: 'Honors', to: '/achievements' },
+  { label: 'Certifications', to: '/certifications' },
   { label: 'Beyond Code', to: '/beyond-code' },
   { label: 'Contact', to: '/contact' },
 ];
@@ -21,6 +23,7 @@ export default function Navbar({ theme, onToggleTheme, onLogoClick, onOpenPalett
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { settings } = useSiteSettings();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -40,22 +43,11 @@ export default function Navbar({ theme, onToggleTheme, onLogoClick, onOpenPalett
           onClick={() => { closeMenu(); onLogoClick?.(); }}
         >
           <div className="brand-sakura-icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <defs>
-                <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#E891B4"/>
-                  <stop offset="100%" stopColor="#A78BFA"/>
-                </linearGradient>
-              </defs>
-              <rect width="28" height="28" rx="8" fill="url(#logoGrad)" />
-              <text x="5" y="21" fontFamily="Outfit,sans-serif" fontWeight="800" fontSize="18" fill="white">D</text>
-              <circle cx="22" cy="6" r="3" fill="white" opacity="0.85"/>
-              <circle cx="22" cy="6" r="1.2" fill="url(#logoGrad)"/>
-            </svg>
+            <BrandLogo size={28} />
           </div>
           <div className="brand-text-wrap">
-            <span className="brand-name">DIMPLE'S WORLD</span>
-            <span className="brand-tag">THE CREATIVE UNIVERSE OF DIMPLE</span>
+            <span className="brand-name">{settings.brandName}</span>
+            <span className="brand-tag">{settings.brandSubtitle}</span>
           </div>
         </Link>
 
@@ -103,7 +95,7 @@ export default function Navbar({ theme, onToggleTheme, onLogoClick, onOpenPalett
 
           {/* GitHub Profile */}
           <a
-            href={personalInfo.github}
+            href={settings.github}
             target="_blank"
             rel="noreferrer"
             className="action-icon-btn"
@@ -135,7 +127,7 @@ export default function Navbar({ theme, onToggleTheme, onLogoClick, onOpenPalett
         <div className="mobile-drawer-overlay" onClick={closeMenu}>
           <div className="mobile-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
-              <span className="drawer-brand">DIMPLE'S WORLD</span>
+              <span className="drawer-brand">{settings.brandName}</span>
               <button className="drawer-close-btn" onClick={closeMenu}>
                 <X size={20} />
               </button>
@@ -159,14 +151,14 @@ export default function Navbar({ theme, onToggleTheme, onLogoClick, onOpenPalett
                 <span>Toggle {theme === 'dark' ? 'Light Theme' : 'Dark Theme'}</span>
               </button>
               <a
-                href={personalInfo.github}
+                href={settings.github}
                 target="_blank"
                 rel="noreferrer"
                 className="drawer-github-link"
                 onClick={closeMenu}
               >
                 <GithubIcon size={16} />
-                <span>github.com/Dimple-11</span>
+                <span>{settings.github.replace(/^https?:\/\/(www\.)?/, '')}</span>
               </a>
             </div>
           </div>

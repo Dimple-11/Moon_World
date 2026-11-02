@@ -16,9 +16,7 @@ export const personalInfo = {
   linkedin: 'https://linkedin.com/in/dimple-11',
   codeforces: 'https://codeforces.com',
   leetcode: 'https://leetcode.com',
-  resumeUrl: '#',
   tagline: 'Where code meets creativity, and every pixel has a story.',
-  heroHeadline: 'Building intelligent things with a little imagination.',
   rotatingPhrases: [
     'AI/ML Explorer',
     'Full-Stack Developer',

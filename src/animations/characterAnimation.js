@@ -38,6 +38,8 @@ export class CharacterAnimator {
     this.isInitialReady = false;
     this.isAllLoaded = false;
     this.rafId = null;
+    this.idlePreloadHandle = null;
+    this.nextPageToLoad = 0;
 
     // Check prefers-reduced-motion
     this.prefersReducedMotion = false;
@@ -47,6 +49,7 @@ export class CharacterAnimator {
 
     this.handleResize = this.handleResize.bind(this);
     this.tick = this.tick.bind(this);
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
   }
 
   async init() {
@@ -81,8 +84,8 @@ export class CharacterAnimator {
       // 3. Start animation loop
       this.startLoop();
 
-      // 4. Preload remaining pages in background efficiently
-      this.preloadAllPages();
+      // 4. Preload remaining pages only when the browser is idle and the tab is visible
+      this.startIdlePreload();
 
       // 5. Window resize listener
       window.addEventListener('resize', this.handleResize);
@@ -140,24 +143,70 @@ export class CharacterAnimator {
     return promise;
   }
 
-  async preloadAllPages() {
+  /**
+   * Start loading the remaining atlas pages only when the browser is idle.
+   * Loading pauses automatically while the tab is hidden.
+   */
+  startIdlePreload() {
     if (!this.metadata || !this.metadata.pages) return;
-    const totalPages = this.metadata.pages.length;
-    let loadedCount = 0;
+    this.nextPageToLoad = Math.max(this.nextPageToLoad, 0);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+    this.handleVisibilityChange();
+  }
 
-    for (let i = 0; i < totalPages; i++) {
-      if (this.isDestroyed) return;
+  handleVisibilityChange() {
+    if (typeof document !== 'undefined' && document.hidden) {
+      if (this.idlePreloadHandle !== null) {
+        if (typeof window.cancelIdleCallback === 'function') {
+          window.cancelIdleCallback(this.idlePreloadHandle);
+        } else {
+          clearTimeout(this.idlePreloadHandle);
+        }
+        this.idlePreloadHandle = null;
+      }
+      return;
+    }
+    this.queueNextPage();
+  }
+
+  queueNextPage() {
+    if (this.isDestroyed || this.isAllLoaded || this.idlePreloadHandle !== null) return;
+    if (!this.metadata || !this.metadata.pages) return;
+    if (typeof document !== 'undefined' && document.hidden) return;
+
+    const totalPages = this.metadata.pages.length;
+    while (this.pages.has(this.nextPageToLoad) && this.nextPageToLoad < totalPages) {
+      this.nextPageToLoad++;
+    }
+
+    if (this.nextPageToLoad >= totalPages) {
+      this.isAllLoaded = true;
+      return;
+    }
+
+    const run = async () => {
+      this.idlePreloadHandle = null;
+      if (this.isDestroyed || document.hidden) return;
+
+      const pageIndex = this.nextPageToLoad++;
       try {
-        await this.loadPage(i);
-        loadedCount++;
+        await this.loadPage(pageIndex);
         if (this.onProgress) {
-          this.onProgress(loadedCount / totalPages);
+          this.onProgress(this.pages.size / totalPages);
         }
       } catch (err) {
-        console.warn(`Error loading atlas page ${i}:`, err);
+        console.warn(`Error loading atlas page ${pageIndex}:`, err);
       }
+      this.queueNextPage();
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      this.idlePreloadHandle = window.requestIdleCallback(run, { timeout: 2500 });
+    } else {
+      this.idlePreloadHandle = setTimeout(run, 280);
     }
-    this.isAllLoaded = true;
   }
 
   handleResize() {
@@ -203,6 +252,12 @@ export class CharacterAnimator {
 
   tick() {
     if (this.isDestroyed) return;
+
+    // Skip painting while the tab is hidden to save battery/CPU
+    if (typeof document !== 'undefined' && document.hidden) {
+      this.rafId = requestAnimationFrame(this.tick);
+      return;
+    }
 
     // LERP calculation: smooth easing towards targetFrame
     const diff = this.targetFrame - this.currentFrame;
@@ -291,6 +346,17 @@ export class CharacterAnimator {
     if (this.rafId) {
       cancelAnimationFrame(this.rafId);
       this.rafId = null;
+    }
+    if (this.idlePreloadHandle !== null) {
+      if (typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(this.idlePreloadHandle);
+      } else {
+        clearTimeout(this.idlePreloadHandle);
+      }
+      this.idlePreloadHandle = null;
+    }
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     }
     window.removeEventListener('resize', this.handleResize);
     this.pages.clear();

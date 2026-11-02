@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, Sparkles, X, ChevronLeft, ChevronRight, Calendar, Tag } from 'lucide-react';
-import { initialGallery } from '../../server/seedData.js';
+import { initialGallery } from '../data/fallbackContent.js';
 
 const CATEGORIES = ['All', 'Hackathons', 'Tech & Setups', 'Campus Life', 'Creative Artwork', 'Aesthetic'];
 
@@ -89,7 +89,7 @@ export default function GalleryPage() {
                 onClick={() => setActiveLightboxIndex(idx)}
               >
                 <div className="scrapbook-photo-frame">
-                  <img src={photo.imageUrl} alt={photo.title} className="scrapbook-img" loading="lazy" />
+                  <img src={photo.imageUrl} alt={photo.title} className="scrapbook-img" loading="lazy" decoding="async" />
                   <div className="scrapbook-vintage-tape" />
                   {photo.isFeatured && (
                     <span className="scrapbook-stamp">Featured ★</span>
@@ -138,7 +138,7 @@ export default function GalleryPage() {
 
           <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
             <div className="lightbox-image-wrap">
-              <img src={activePhoto.imageUrl} alt={activePhoto.title} className="lightbox-img" />
+              <img src={activePhoto.imageUrl} alt={activePhoto.title} className="lightbox-img" decoding="async" />
             </div>
             <div className="lightbox-meta-bar">
               <div>

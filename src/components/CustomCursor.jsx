@@ -1,75 +1,103 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function CustomCursor() {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [trailingPos, setTrailingPos] = useState({ x: -100, y: -100 });
+  const dotRef = useRef(null);
+  const followerRef = useRef(null);
+  const sparkleIdRef = useRef(0);
+  const targetRef = useRef({ x: -100, y: -100 });
+  const trailingRef = useRef({ x: -100, y: -100 });
+  const hoveredRef = useRef(false);
+
+  const [enabled, setEnabled] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [sparkles, setSparkles] = useState([]);
-  const [enabled, setEnabled] = useState(true);
 
-  const requestRef = useRef(null);
-
+  // Only enable on real pointer devices, and never when motion is reduced.
   useEffect(() => {
-    // Disable on touch devices or reduced motion
-    if (window.matchMedia('(pointer: coarse)').matches || 
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setEnabled(false);
-      return;
-    }
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+
+    const pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const update = () => {
+      const shouldEnable = pointerQuery.matches && !motionQuery.matches;
+      setEnabled(shouldEnable);
+      document.documentElement.classList.toggle('has-custom-cursor', shouldEnable);
+    };
+
+    update();
+    pointerQuery.addEventListener?.('change', update);
+    motionQuery.addEventListener?.('change', update);
+
+    return () => {
+      pointerQuery.removeEventListener?.('change', update);
+      motionQuery.removeEventListener?.('change', update);
+      document.documentElement.classList.remove('has-custom-cursor');
+    };
+  }, []);
+
+  // Listeners and the animation loop are created exactly once while enabled.
+  useEffect(() => {
+    if (!enabled) return undefined;
+
+    let rafId = null;
+
+    const isInteractiveTarget = (target) => {
+      if (!target || !target.closest) return false;
+      return Boolean(
+        target.closest('a, button, input, textarea, select, label, [role="button"], .clickable, .project-showcase-card')
+      );
+    };
 
     const onMouseMove = (e) => {
-      setPos({ x: e.clientX, y: e.clientY });
+      targetRef.current = { x: e.clientX, y: e.clientY };
 
-      // Check if target is interactive
-      const target = e.target;
-      const isInteractive = target && (
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.classList.contains('clickable') ||
-        target.classList.contains('project-showcase-card')
-      );
-      setIsHovered(!!isInteractive);
+      const nextHovered = isInteractiveTarget(e.target);
+      if (nextHovered !== hoveredRef.current) {
+        hoveredRef.current = nextHovered;
+        setIsHovered(nextHovered);
+      }
     };
 
     const onMouseDown = (e) => {
       setIsClicking(true);
-      // Spawn subtle sparkle
-      const newSparkle = {
-        id: Date.now() + Math.random(),
-        x: e.clientX,
-        y: e.clientY
-      };
-      setSparkles((prev) => [...prev.slice(-4), newSparkle]);
+      const id = (sparkleIdRef.current += 1);
+      const sparkle = { id, x: e.clientX, y: e.clientY };
+      setSparkles((prev) => [...prev.slice(-4), sparkle]);
     };
 
     const onMouseUp = () => setIsClicking(false);
 
+    const render = () => {
+      const { x, y } = targetRef.current;
+      const trailing = trailingRef.current;
+
+      trailing.x += (x - trailing.x) * 0.18;
+      trailing.y += (y - trailing.y) * 0.18;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
+      if (followerRef.current) {
+        followerRef.current.style.transform = `translate3d(${trailing.x}px, ${trailing.y}px, 0)`;
+      }
+
+      rafId = requestAnimationFrame(render);
+    };
+
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mouseup', onMouseUp);
-
-    // Smooth trailing lerp loop
-    const animateTrailing = () => {
-      setTrailingPos((prev) => ({
-        x: prev.x + (pos.x - prev.x) * 0.18,
-        y: prev.y + (pos.y - prev.y) * 0.18
-      }));
-      requestRef.current = requestAnimationFrame(animateTrailing);
-    };
-    requestRef.current = requestAnimationFrame(animateTrailing);
+    rafId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [pos.x, pos.y]);
+  }, [enabled]);
 
   if (!enabled) return null;
 
@@ -77,15 +105,15 @@ export default function CustomCursor() {
     <>
       {/* Small lavender inner cursor dot */}
       <div
+        ref={dotRef}
         className={`custom-cursor-dot ${isClicking ? 'is-clicking' : ''}`}
-        style={{ transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }}
         aria-hidden="true"
       />
 
       {/* Trailing soft aura circle */}
       <div
+        ref={followerRef}
         className={`custom-cursor-follower ${isHovered ? 'is-hovered' : ''} ${isClicking ? 'is-clicking' : ''}`}
-        style={{ transform: `translate3d(${trailingPos.x}px, ${trailingPos.y}px, 0)` }}
         aria-hidden="true"
       />
 

@@ -1,0 +1,472 @@
+/* REDESIGNED MOCHI AI ANIME COMPANION */
+
+/* =========================================================
+   REDESIGNED MOCHI AI ANIME COMPANION
+   ========================================================= */
+.mochi-root-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.mochi-floating-anchor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: all;
+}
+
+.mochi-trigger-character {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 10px 24px rgba(167, 139, 250, 0.45));
+}
+
+.mochi-trigger-character:hover {
+  transform: translateY(-6px) scale(1.08);
+}
+
+.mochi-trigger-character:focus-visible,
+.mochi-icon-btn:focus-visible,
+.mochi-send-button:focus-visible,
+.mochi-suggestion-pill:focus-visible,
+.mochi-retry-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+}
+
+.mochi-avatar-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+  opacity: 0.35;
+  animation: mochiGlowPulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes mochiGlowPulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.6; }
+}
+
+.mochi-online-ping {
+  position: absolute;
+  bottom: 10px;
+  right: 8px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2.5px solid var(--bg-card);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+}
+
+.mochi-tail-wag {
+  transform-origin: 22px 75px;
+  animation: mochiTailWag 2.4s ease-in-out infinite;
+}
+
+@keyframes mochiTailWag {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(14deg); }
+}
+
+/* Expanded Mochi Chat Panel */
+.mochi-chat-window-premium {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: min(390px, 92vw);
+  height: 560px;
+  max-height: 82vh;
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border-color);
+  border-radius: 26px;
+  box-shadow: 0 20px 60px rgba(81, 67, 111, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: all;
+  animation: panelSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes panelSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mochi-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.95rem 1.25rem;
+  background: linear-gradient(135deg, rgba(233, 166, 196, 0.25), rgba(146, 118, 201, 0.25));
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.mochi-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mochi-header-avatar-box {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-card);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.mochi-header-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid var(--bg-card);
+}
+
+.mochi-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mochi-header-name {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.mochi-badge-ai {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-primary));
+  color: #fff;
+}
+
+.mochi-header-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* Subtle, honest note when the local fallback is answering */
+.mochi-offline-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--accent-lavender) 12%, transparent);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.mochi-offline-note svg {
+  flex-shrink: 0;
+  color: var(--accent-lavender);
+}
+
+.mochi-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mochi-icon-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mochi-icon-btn:hover {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.mochi-messages-stream {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mochi-message-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.65rem;
+}
+
+.mochi-message-row.is-user {
+  justify-content: flex-end;
+}
+
+.mochi-msg-avatar {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-bottom: 1.25rem;
+}
+
+.mochi-msg-bubble-wrap {
+  display: flex;
+  flex-direction: column;
+  max-width: 82%;
+}
+
+.mochi-message-row.is-user .mochi-msg-bubble-wrap {
+  align-items: flex-end;
+}
+
+.mochi-msg-bubble {
+  padding: 0.8rem 1.05rem;
+  border-radius: 18px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.mochi-message-row.is-mochi .mochi-msg-bubble {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 4px;
+}
+
+.mochi-message-row.is-user .mochi-msg-bubble {
+  background: linear-gradient(135deg, var(--accent-primary), #7C5CB8);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.mochi-msg-bubble p + p {
+  margin-top: 0.5rem;
+}
+
+.mochi-msg-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+  padding: 0 0.35rem;
+}
+
+.mochi-msg-timestamp {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.mochi-msg-bubble.is-failed {
+  border-color: var(--accent-mauve);
+  background: color-mix(in srgb, var(--accent-pink) 8%, var(--bg-card));
+}
+
+.mochi-retry-btn {
+  background: none;
+  border: none;
+  padding: 0.15rem 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.mochi-retry-btn:hover {
+  color: var(--accent-hover);
+}
+
+.mochi-retry-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mochi-typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  padding: 0.75rem 1rem;
+  animation: mochiBreath 2.8s ease-in-out infinite;
+}
+
+@keyframes mochiBreath {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.015); opacity: 1; }
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-pink);
+  animation: typingBounce 1.3s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+}
+
+.typing-caption {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 0.35rem;
+}
+
+.mochi-suggestions-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.mochi-suggestion-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mochi-suggestion-pill:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+.mochi-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+}
+
+.mochi-text-input {
+  flex: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.95rem;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.mochi-text-input:focus {
+  border-color: var(--accent-primary);
+}
+
+.mochi-send-button {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-primary));
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.mochi-send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mochi-send-button:not(:disabled):hover {
+  transform: scale(1.06);
+}
+
+/* Comfortable touch targets on small screens */
+@media (max-width: 768px) {
+  .mochi-icon-btn,
+  .mochi-send-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .mochi-suggestion-pill {
+    min-height: 36px;
+  }
+}
+
+/* Calm mode: no pulsing glow, tail wag, breathing or slide-in */
+@media (prefers-reduced-motion: reduce) {
+  .mochi-avatar-glow,
+  .mochi-tail-wag,
+  .typing-dot,
+  .mochi-typing-bubble,
+  .mochi-chat-window-premium {
+    animation: none;
+  }
+
+  .mochi-trigger-character:hover,
+  .mochi-icon-btn:hover,
+  .mochi-send-button:not(:disabled):hover,
+  .mochi-suggestion-pill:hover {
+    transform: none;
+  }
+}
+
+

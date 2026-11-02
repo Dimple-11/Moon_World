@@ -42,3 +42,7 @@ temp/
 *.sqlite
 *.sqlite3
 uploads/
+
+# Large local media source (kept on disk, not in git)
+extracted_frames/
+Dimpuru.mp4

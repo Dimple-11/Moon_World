@@ -5,6 +5,7 @@ import {
   Settings, LogOut, ArrowLeft, Sparkles, Disc3
 } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import DatabaseStatusBanner from '../../components/DatabaseStatusBanner';
 
 export default function AdminLayout() {
   const { admin, isAuthenticated, isLoading, logout } = useAdminAuth();
@@ -117,6 +118,7 @@ export default function AdminLayout() {
         </header>
 
         <div className="admin-viewport-scroll">
+          <DatabaseStatusBanner />
           <Outlet />
         </div>
       </main>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, MessageCircle, X, Send, RotateCcw, Heart, Bot, Volume2, ChevronDown, Minimize2 } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Send, RotateCcw, Minimize2, Sparkles, Flower2 } from 'lucide-react';
 
-// Highly expressive, bespoke original anime cat SVG vector for Mochi
+// Bespoke original anime cat SVG vector for Mochi
 function MochiAvatarSVG({ state = 'idle', size = 64 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`mochi-svg mochi-state-${state}`}>
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`mochi-svg mochi-state-${state}`} aria-hidden="true">
       <defs>
         {/* Soft fur gradients */}
         <linearGradient id="mochiFur" x1="20" y1="10" x2="80" y2="90" gradientUnits="userSpaceOnUse">
@@ -31,7 +32,7 @@ function MochiAvatarSVG({ state = 'idle', size = 64 }) {
         </linearGradient>
       </defs>
 
-      {/* Fluffy tail (wags in idle & happy) */}
+      {/* Fluffy tail */}
       <path
         d="M 22 75 C 10 70 4 55 12 46 C 18 39 25 45 22 56 C 20 63 24 68 28 72 Z"
         fill="url(#mochiFur)"
@@ -65,19 +66,16 @@ function MochiAvatarSVG({ state = 'idle', size = 64 }) {
 
       {/* Expression Variations */}
       {state === 'sleeping' ? (
-        // Sleeping crescent eyes
         <g stroke="#5B4A78" strokeWidth="2.5" strokeLinecap="round" fill="none">
           <path d="M 33 48 Q 40 54 45 49" />
           <path d="M 55 49 Q 60 54 67 48" />
         </g>
       ) : state === 'happy' ? (
-        // Joyful smiling arcs
         <g stroke="#5B4A78" strokeWidth="2.5" strokeLinecap="round" fill="none">
           <path d="M 33 50 Q 39 43 45 50" />
           <path d="M 55 50 Q 61 43 67 50" />
         </g>
       ) : state === 'thinking' ? (
-        // One curious eyebrow raised, looking up
         <g>
           <ellipse cx="39" cy="46" rx="5" ry="6" fill="url(#mochiEyeIris)" />
           <circle cx="37" cy="44" r="2.2" fill="#FFFFFF" />
@@ -86,17 +84,13 @@ function MochiAvatarSVG({ state = 'idle', size = 64 }) {
           <path d="M 35 39 Q 40 37 45 40" stroke="#5B4A78" strokeWidth="1.5" fill="none" strokeLinecap="round" />
         </g>
       ) : (
-        // Classic large expressive anime eyes with light reflections
         <g>
-          {/* Left Eye */}
           <ellipse cx="38" cy="48" rx="6" ry="7.5" fill="url(#mochiEyeIris)" />
           <circle cx="36" cy="45" r="2.5" fill="#FFFFFF" />
           <circle cx="41" cy="51" r="1.2" fill="#FFFFFF" />
-          {/* Right Eye */}
           <ellipse cx="62" cy="48" rx="6" ry="7.5" fill="url(#mochiEyeIris)" />
           <circle cx="60" cy="45" r="2.5" fill="#FFFFFF" />
           <circle cx="65" cy="51" r="1.2" fill="#FFFFFF" />
-          {/* Lashes */}
           <path d="M 32 44 Q 38 41 44 44" stroke="#483463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
           <path d="M 56 44 Q 62 41 68 44" stroke="#483463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
         </g>
@@ -107,10 +101,8 @@ function MochiAvatarSVG({ state = 'idle', size = 64 }) {
 
       {/* Mouth */}
       {state === 'talking' ? (
-        // Open chatting mouth
         <path d="M 47 55 Q 50 60 53 55 Z" fill="#FF8BA7" stroke="#6C4A78" strokeWidth="1.2" />
       ) : (
-        // Classic cute cat :3 mouth
         <path d="M 46 55 Q 48 57 50 55 Q 52 57 54 55" stroke="#5B4A78" strokeWidth="1.4" fill="none" strokeLinecap="round" />
       )}
 
@@ -122,319 +114,473 @@ function MochiAvatarSVG({ state = 'idle', size = 64 }) {
 
       {/* Lavender Silk Ribbon / Bow under chin */}
       <g transform="translate(50, 67)">
-        {/* Left bow wing */}
         <path d="M 0 0 C -8 -6 -14 0 -8 4 C -3 6 0 0 0 0 Z" fill="url(#mochiRibbon)" />
-        {/* Right bow wing */}
         <path d="M 0 0 C 8 -6 14 0 8 4 C 3 6 0 0 0 0 Z" fill="url(#mochiRibbon)" />
-        {/* Golden bell or gem in center */}
         <circle cx="0" cy="2" r="3.2" fill="#FFD54F" stroke="#FFA000" strokeWidth="0.8" />
         <circle cx="-0.8" cy="1.2" r="0.9" fill="#FFFDE7" />
       </g>
 
-      {/* Cute Front Paws */}
+      {/* Front Paws */}
       <ellipse cx="40" cy="74" rx="4.5" ry="3.5" fill="#FFFFFF" stroke="#E2D4F0" strokeWidth="1.2" />
       <ellipse cx="60" cy="74" rx="4.5" ry="3.5" fill="#FFFFFF" stroke="#E2D4F0" strokeWidth="1.2" />
     </svg>
   );
 }
 
-const DEFAULT_QUESTIONS = [
-  "What is Dimple's tech stack?",
-  "Tell me about her InnoVortex project",
-  "Where does she study?",
-  "What was her role at Aevona?",
-  "Has she written any blogs?",
-  "How can I contact or hire her?"
+const STORAGE_KEY = 'mochi-conversation-v1';
+const MAX_CLIENT_HISTORY = 8;
+
+const GREETINGS = {
+  '/projects': "You're in the project archive. I can explain any case study here, or help you choose where to begin.",
+  '/contact': "This is where notes reach Dimple. If you'd like, I can help you shape a short, clear message.",
+  '/skills': "Here is Dimple's toolkit. Ask me which skills sit behind a particular project.",
+  '/experience': "This is Dimple's path so far. I can summarise a role or connect the dots between them.",
+  '/achievements': "Honours and hackathon moments. Ask me about any of them.",
+  '/certifications': "Her listed credentials live here. I can explain what each one covers.",
+  '/blog': "These are Dimple's written notes. I can suggest where to start reading.",
+  '/gallery': "A visual scrapbook of campus life and creative work. Ask me about any chapter.",
+  '/about': "A little more about Dimple. Ask me anything you'd like to understand.",
+  '/beyond-code': "The creative side of her world. I can point you to the parts you might enjoy.",
+};
+
+const DEFAULT_GREETING = "Hello. I'm Mochi, a quiet guide to Dimple's world. Ask about her projects, skills, experience, or how to reach her.";
+
+const STARTERS = {
+  '/projects': [
+    'Which project should I open first?',
+    'Tell me about her InnoVortex work.',
+    'Which stack does she build with?'
+  ],
+  '/contact': [
+    'Help me write a short message.',
+    'What is the best way to reach Dimple?',
+    'Is she open to internships?'
+  ],
+  '/skills': [
+    'Which skills should I learn first?',
+    'What does she use for AI work?',
+    'Which project shows her frontend skills?'
+  ],
+  '/experience': [
+    'Summarise her internships.',
+    'What did she do at Aevona Solutions?',
+    'How did she begin with AI?'
+  ],
+  '/achievements': [
+    'What is her proudest achievement?',
+    'Tell me about InnoVortex.',
+    'Which hackathons has she joined?'
+  ],
+  '/certifications': [
+    'What do her certifications cover?',
+    'Which credential fits AI work best?',
+    'How can I verify them?'
+  ],
+  '/blog': [
+    'Which post should I read first?',
+    'What does she write about?',
+    'Tell me the InnoVortex story.'
+  ],
+  '/gallery': [
+    'What can I find in this gallery?',
+    'Tell me about her campus life.',
+    'Where can I see her creative work?'
+  ],
+};
+
+const DEFAULT_STARTERS = [
+  'Who is Dimple?',
+  'Show me her strongest projects.',
+  'How can I get in touch?'
 ];
 
+function timeNow() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function greetingFor(pathname) {
+  return GREETINGS[pathname] || DEFAULT_GREETING;
+}
+
+function loadSession() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+  } catch {
+    /* ignore malformed session data */
+  }
+  return null;
+}
+
 export default function Mochi() {
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [bubbleText, setBubbleText] = useState("Nyaa~! Welcome to Dimple's World! Click me to chat! ✨");
-  const [showBubble, setShowBubble] = useState(true);
-  const [catState, setCatState] = useState('idle'); // 'idle' | 'happy' | 'thinking' | 'talking' | 'sleeping'
-  const [messages, setMessages] = useState([
-    {
-      sender: 'mochi',
-      text: "Nyaa~! I'm **Mochi**, Dimple's official AI anime cat companion! 🌸 Ask me anything about her projects, machine learning models, IGDTUW journey, or technical skills!",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-  ]);
+  const [catState, setCatState] = useState('idle');
+  const [messages, setMessages] = useState(() => {
+    const restored = loadSession();
+    return restored || [{ id: 'greeting', sender: 'mochi', text: greetingFor(pathname), timestamp: timeNow() }];
+  });
   const [inputVal, setInputVal] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [isThinking, setIsThinking] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
+
+  const messageIdRef = useRef(0);
+  const panelRef = useRef(null);
+  const triggerRef = useRef(null);
   const inputRef = useRef(null);
+  const streamRef = useRef(null);
+  const closeRef = useRef(null);
 
-  // Playful spontaneous speech bubbles when collapsed
+  const starters = useMemo(() => STARTERS[pathname] || DEFAULT_STARTERS, [pathname]);
+
+  const nextId = () => {
+    messageIdRef.current += 1;
+    return `m${messageIdRef.current}`;
+  };
+
+  // Keep the conversation for this browser session only.
   useEffect(() => {
-    if (isOpen) return;
-
-    const playfulThoughts = [
-      "Did you check out her 145-frame hero character? 🐾",
-      "InnoVortex 2024 Top 10 Finalist! Ask me about it! 🏆",
-      "Purrr... Dimple's code is written with so much love! ✨",
-      "Ask me anything about her AI & Full-Stack projects! 🌸",
-      "Nyaa~ feeling curious today? Let's chat! ฅ^•ﻌ•^ฅ"
-    ];
-
-    const interval = setInterval(() => {
-      const randomThought = playfulThoughts[Math.floor(Math.random() * playfulThoughts.length)];
-      setBubbleText(randomThought);
-      setShowBubble(true);
-      setCatState('happy');
-
-      setTimeout(() => {
-        setCatState('idle');
-      }, 2000);
-
-      setTimeout(() => {
-        setShowBubble(false);
-      }, 7000);
-    }, 24000);
-
-    return () => clearInterval(interval);
-  }, [isOpen]);
-
-  // Scroll to bottom on new messages
-  useEffect(() => {
-    if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    try {
+      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      /* storage may be unavailable; the in-memory conversation still works */
     }
-  }, [messages, isTyping, isOpen]);
+  }, [messages]);
 
-  // Focus input when opened
+  const prefersReducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+  const scrollToLatest = useCallback(() => {
+    const stream = streamRef.current;
+    if (!stream) return;
+    stream.scrollTo({
+      top: stream.scrollHeight,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+    });
+  }, []);
+
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 150);
-      setCatState('happy');
-      setTimeout(() => setCatState('idle'), 1500);
-    }
-  }, [isOpen]);
+    if (!isOpen) return;
+    scrollToLatest();
+  }, [messages, isThinking, isOpen, scrollToLatest]);
 
-  // Send message to backend Gemini AI
-  const handleSend = async (textToSend) => {
-    const text = (textToSend || inputVal).trim();
-    if (!text || isTyping) return;
+  const closePanel = useCallback(() => {
+    setIsOpen(false);
+    setCatState('idle');
+  }, []);
 
-    const userMsg = {
-      sender: 'user',
-      text,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  closeRef.current = closePanel;
+
+  // Focus management, focus trap and Esc to close.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const panel = panelRef.current;
+    const returnFocusTo = document.activeElement;
+
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 120);
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeRef.current?.();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !panel) return;
+
+      const focusable = panel.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputVal('');
-    setIsTyping(true);
-    setCatState('thinking');
+    document.addEventListener('keydown', handleKeyDown);
 
-    try {
-      const response = await fetch('/api/ai/mochi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          history: messages.slice(-6).map((m) => ({
-            role: m.sender === 'user' ? 'user' : 'model',
-            parts: [{ text: m.text }]
-          }))
-        })
-      });
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleKeyDown);
+      if (returnFocusTo && typeof returnFocusTo.focus === 'function' && document.contains(returnFocusTo)) {
+        returnFocusTo.focus();
+      } else {
+        triggerRef.current?.focus();
+      }
+    };
+  }, [isOpen]);
 
-      const data = await response.json();
-      setCatState('talking');
+  useEffect(() => {
+    if (!isOpen) return;
+    setCatState('happy');
+    const timer = window.setTimeout(() => setCatState('idle'), 1400);
+    return () => window.clearTimeout(timer);
+  }, [isOpen]);
 
-      setTimeout(() => {
+  const sendMessage = useCallback(
+    async (rawText, retryId = null) => {
+      const text = String(rawText || '').trim();
+      if (!text || isThinking) return;
+
+      if (retryId) {
+        setMessages((prev) => prev.filter((msg) => msg.id !== retryId));
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        { id: nextId(), sender: 'user', text, timestamp: timeNow() }
+      ]);
+      setInputVal('');
+      setIsThinking(true);
+      setCatState('thinking');
+
+      const history = messages
+        .filter((msg) => msg.sender === 'user' || msg.sender === 'mochi')
+        .slice(-MAX_CLIENT_HISTORY)
+        .map((msg) => ({
+          role: msg.sender === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.text }]
+        }));
+
+      try {
+        const response = await fetch('/api/ai/mochi', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history, page: pathname })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Mochi could not answer just now.');
+        }
+
+        setIsOffline(Boolean(data.offline));
+        setCatState('talking');
+        setMessages((prev) => [
+          ...prev,
+          { id: nextId(), sender: 'mochi', text: data.reply, timestamp: timeNow() }
+        ]);
+      } catch (err) {
+        console.warn('Mochi chat error:', err);
         setMessages((prev) => [
           ...prev,
           {
+            id: nextId(),
             sender: 'mochi',
-            text: data.reply || "Nyaa~! I couldn't catch that, but I'm always happy to talk about Dimple's work!",
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            text: "I lost my thread for a moment. It isn't your fault. We can try that again, or you can reach Dimple directly from the Contact page.",
+            timestamp: timeNow(),
+            failed: true,
+            retryText: text
           }
         ]);
-        setIsTyping(false);
-        setCatState('happy');
-        setTimeout(() => setCatState('idle'), 2500);
-      }, 400);
-    } catch (err) {
-      console.error('Mochi chat error:', err);
-      setIsTyping(false);
-      setCatState('idle');
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: 'mochi',
-          text: "Nyaa~ my little paws had trouble reaching the cloud, but I'm still right here! Dimple is an IT student at IGDTUW building intelligent AI systems! What else would you like to know? 🐾",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
-  const handleClearChat = () => {
-    setMessages([
-      {
-        sender: 'mochi',
-        text: "Conversation refreshed! ✨ What would you like to explore next about Dimple's work?",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      } finally {
+        setIsThinking(false);
+        setCatState('idle');
       }
-    ]);
+    },
+    [isThinking, messages, pathname]
+  );
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage(inputVal);
+    }
   };
+
+  const clearConversation = () => {
+    const reset = [{ id: nextId(), sender: 'mochi', text: greetingFor(pathname), timestamp: timeNow() }];
+    setMessages(reset);
+    setInputVal('');
+    setCatState('idle');
+    inputRef.current?.focus();
+  };
+
+  const showStarters = messages.filter((msg) => msg.sender === 'user').length === 0;
+
+  const renderRichText = (text) =>
+    String(text).split('\n').map((paragraph, pIdx) => (
+      <p key={pIdx}>
+        {paragraph.split('**').map((chunk, cIdx) =>
+          cIdx % 2 === 1 ? <strong key={cIdx}>{chunk}</strong> : chunk
+        )}
+      </p>
+    ));
 
   return (
     <div className="mochi-root-container">
-      {/* =========================================================
-          COLLAPSED FLOATING AVATAR & SPEECH BUBBLE
-          ========================================================= */}
       {!isOpen && (
         <div className="mochi-floating-anchor">
-          {/* Spontaneous Speech Bubble */}
-          {showBubble && (
-            <div className="mochi-speech-bubble" onClick={() => setIsOpen(true)}>
-              <span className="mochi-bubble-text">{bubbleText}</span>
-              <div className="mochi-bubble-arrow" />
-            </div>
-          )}
-
-          {/* Interactive Anime Cat Button */}
           <button
+            ref={triggerRef}
+            type="button"
             className="mochi-trigger-character"
-            onClick={() => {
-              setIsOpen(true);
-              setShowBubble(false);
-            }}
-            aria-label="Chat with Mochi, Dimple's AI cat companion"
-            title="Chat with Mochi ✨"
+            onClick={() => setIsOpen(true)}
+            aria-label="Open Mochi, a quiet guide to Dimple's portfolio"
+            aria-haspopup="dialog"
+            aria-expanded={false}
+            title="Mochi, your guide to Dimple's world"
           >
-            <div className="mochi-avatar-glow" />
+            <span className="mochi-avatar-glow" aria-hidden="true" />
             <MochiAvatarSVG state={catState} size={70} />
-            <div className="mochi-online-ping" title="Mochi is online" />
+            <span className="mochi-online-ping" aria-hidden="true" />
           </button>
         </div>
       )}
 
-      {/* =========================================================
-          EXPANDED PREMIUM CONVERSATIONAL PANEL
-          ========================================================= */}
       {isOpen && (
-        <div className="mochi-chat-window-premium">
-          {/* Header */}
+        <div
+          ref={panelRef}
+          className="mochi-chat-window-premium"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mochi-panel-title"
+        >
           <div className="mochi-panel-header">
             <div className="mochi-header-left">
               <div className="mochi-header-avatar-box">
                 <MochiAvatarSVG state={catState} size={42} />
-                <span className="mochi-header-online-dot" />
+                <span className="mochi-header-online-dot" aria-hidden="true" />
               </div>
               <div className="mochi-header-info">
-                <div className="mochi-header-name">
+                <div className="mochi-header-name" id="mochi-panel-title">
                   <span>Mochi</span>
-                  <span className="mochi-badge-ai">AI Companion</span>
+                  <span className="mochi-badge-ai">Guide</span>
                 </div>
-                <div className="mochi-header-sub">Dimple's Virtual Cat · Online</div>
+                <div className="mochi-header-sub">A quiet guide to Dimple's world</div>
               </div>
             </div>
 
             <div className="mochi-header-actions">
               <button
+                type="button"
                 className="mochi-icon-btn"
-                onClick={handleClearChat}
-                title="Restart conversation"
-                aria-label="Restart conversation"
+                onClick={clearConversation}
+                title="Clear this conversation"
+                aria-label="Clear this conversation"
               >
                 <RotateCcw size={15} />
               </button>
               <button
+                type="button"
                 className="mochi-icon-btn"
-                onClick={() => setIsOpen(false)}
-                title="Minimize chat"
-                aria-label="Minimize chat"
+                onClick={closePanel}
+                title="Close chat"
+                aria-label="Close chat"
               >
                 <Minimize2 size={16} />
               </button>
             </div>
           </div>
 
-          {/* Messages Stream */}
-          <div className="mochi-messages-stream">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`mochi-message-row is-${msg.sender}`}>
+          {isOffline && (
+            <p className="mochi-offline-note">
+              <Flower2 size={12} aria-hidden="true" />
+              <span>Offline mode — answers come from Dimple's portfolio notes.</span>
+            </p>
+          )}
+
+          <div
+            ref={streamRef}
+            className="mochi-messages-stream"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions text"
+            aria-label="Conversation with Mochi"
+          >
+            {messages.map((msg) => (
+              <div key={msg.id} className={`mochi-message-row is-${msg.sender}`}>
                 {msg.sender === 'mochi' && (
                   <div className="mochi-msg-avatar">
-                    <MochiAvatarSVG state={idx === messages.length - 1 ? catState : 'idle'} size={28} />
+                    <MochiAvatarSVG state={msg.failed ? 'thinking' : catState} size={28} />
                   </div>
                 )}
                 <div className="mochi-msg-bubble-wrap">
-                  <div className="mochi-msg-bubble">
-                    {/* Render basic bold formatting */}
-                    {msg.text.split('\n').map((paragraph, pIdx) => (
-                      <p key={pIdx}>
-                        {paragraph.split('**').map((chunk, cIdx) =>
-                          cIdx % 2 === 1 ? <strong key={cIdx}>{chunk}</strong> : chunk
-                        )}
-                      </p>
-                    ))}
+                  <div className={`mochi-msg-bubble${msg.failed ? ' is-failed' : ''}`}>
+                    {renderRichText(msg.text)}
                   </div>
-                  <span className="mochi-msg-timestamp">{msg.timestamp}</span>
+                  <div className="mochi-msg-meta">
+                    <span className="mochi-msg-timestamp">{msg.timestamp}</span>
+                    {msg.failed && (
+                      <button
+                        type="button"
+                        className="mochi-retry-btn"
+                        onClick={() => sendMessage(msg.retryText, msg.id)}
+                        disabled={isThinking}
+                      >
+                        Try again
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
 
-            {/* Typing Indicator */}
-            {isTyping && (
+            {isThinking && (
               <div className="mochi-message-row is-mochi">
                 <div className="mochi-msg-avatar">
                   <MochiAvatarSVG state="thinking" size={28} />
                 </div>
-                <div className="mochi-typing-bubble">
+                <div className="mochi-typing-bubble" aria-hidden="true">
                   <span className="typing-dot" />
                   <span className="typing-dot" />
                   <span className="typing-dot" />
-                  <span className="typing-caption">Mochi is thinking...</span>
                 </div>
+                <span className="sr-only">Mochi is thinking</span>
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
-          {/* Suggested Quick Prompts */}
-          <div className="mochi-suggestions-scroll">
-            {DEFAULT_QUESTIONS.map((q, idx) => (
-              <button
-                key={idx}
-                className="mochi-suggestion-pill"
-                onClick={() => handleSend(q)}
-                disabled={isTyping}
-              >
-                <Sparkles size={11} className="suggestion-sparkle" />
-                <span>{q}</span>
-              </button>
-            ))}
-          </div>
+          {showStarters && (
+            <div className="mochi-suggestions-scroll" aria-label="Gentle conversation starters">
+              {starters.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  className="mochi-suggestion-pill"
+                  onClick={() => sendMessage(prompt)}
+                  disabled={isThinking}
+                >
+                  <Sparkles size={11} className="suggestion-sparkle" aria-hidden="true" />
+                  <span>{prompt}</span>
+                </button>
+              ))}
+            </div>
+          )}
 
-          {/* Input Bar */}
           <div className="mochi-input-container">
+            <label className="sr-only" htmlFor="mochi-input">Ask Mochi about Dimple</label>
             <input
               ref={inputRef}
+              id="mochi-input"
               type="text"
               className="mochi-text-input"
-              placeholder="Ask Mochi anything about Dimple..."
+              placeholder="Ask about Dimple's work…"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               onKeyDown={handleKeyDown}
-              maxLength={400}
-              disabled={isTyping}
+              maxLength={500}
+              autoComplete="off"
+              disabled={isThinking}
             />
             <button
+              type="button"
               className="mochi-send-button"
-              onClick={() => handleSend()}
-              disabled={!inputVal.trim() || isTyping}
+              onClick={() => sendMessage(inputVal)}
+              disabled={!inputVal.trim() || isThinking}
               aria-label="Send message to Mochi"
             >
               <Send size={15} />

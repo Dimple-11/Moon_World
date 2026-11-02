@@ -50,7 +50,7 @@
   padding: 0.35rem 0.85rem;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-size: 0.825rem;
   font-weight: 600;
   color: var(--accent-primary);
@@ -68,7 +68,7 @@
   padding: 0.35rem 0.8rem;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-size: 0.775rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -234,7 +234,7 @@
 /* =========================================
    Responsive Breakpoints
    ========================================= */
-@media (max-width: 1080px) {
+@media (max-width: 1024px) {
   .hero-container {
     grid-template-columns: 46% 54%;
     gap: 1.5rem;
@@ -249,7 +249,7 @@
   }
 }
 
-@media (max-width: 868px) {
+@media (max-width: 768px) {
   .hero-section {
     padding: 3.5rem 1.5rem 4rem 1.5rem;
     min-height: auto;
