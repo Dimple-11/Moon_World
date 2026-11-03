@@ -12,85 +12,11 @@
   .contact-main-grid {
     grid-template-columns: 1fr;
   }
-
-  .footer-top-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 1500px) {
-  .brand-tag {
-    display: none;
-  }
-}
-
-@media (max-width: 1400px) {
-  .palette-kbd-hint {
-    display: none;
-  }
-
-  /* Hide the standalone GitHub icon before the nav gets tight */
-  .header-actions > a.action-icon-btn {
-    display: none;
-  }
-}
-
-/* Collapse to the drawer while there is still comfortable room for every link */
-@media (max-width: 1280px) {
-  .nav-links {
-    display: none;
-  }
-
-  .mobile-hamburger-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-  }
-
-  .theme-toggle-label {
-    display: none;
-  }
 }
 
 @media (max-width: 768px) {
   .section-wrap {
     padding: 4.5rem 1.5rem;
-  }
-
-  .footer-top-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .action-icon-btn,
-  .theme-toggle-btn,
-  .mobile-hamburger-btn {
-    min-width: 44px;
-    min-height: 44px;
-  }
-}
-
-@media (max-width: 480px) {
-  .btn-nav-cta {
-    display: none;
-  }
-
-  .header-inner {
-    padding: 0 1rem;
-  }
-
-  .brand-name {
-    font-size: 0.95rem;
-  }
-
-  .header-actions {
-    gap: 0.4rem;
-  }
-
-  .theme-toggle-btn {
-    padding: 0.45rem 0.55rem;
   }
 }
 
@@ -100,11 +26,6 @@
   }
 
   .cp-showcase-strip {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-bottom-bar {
     flex-direction: column;
     align-items: flex-start;
   }

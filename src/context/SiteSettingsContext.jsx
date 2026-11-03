@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import { githubUrl, linkedinUrl, resumeUrl } from '../data/links';
 
 const DEFAULTS = {
   brandName: personalInfo.brandName,
   brandSubtitle: personalInfo.brandSubtitle,
   tagline: personalInfo.tagline,
   email: personalInfo.email,
-  github: personalInfo.github,
-  linkedin: personalInfo.linkedin,
+  github: githubUrl,
+  linkedin: linkedinUrl,
+  resumeUrl,
 };
 
 const SiteSettingsContext = createContext({ settings: DEFAULTS, setSettings: () => {} });

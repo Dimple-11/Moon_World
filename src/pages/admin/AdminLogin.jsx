@@ -16,7 +16,7 @@ export default function AdminLogin() {
     return (
       <div className="admin-loading-screen">
         <Sparkles size={28} className="admin-spin-icon" />
-        <p>Verifying Dimple Studio security token...</p>
+        <p>Verifying Dimplverse Studio security token...</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function AdminLogin() {
           <div className="admin-badge-icon">
             <Lock size={20} />
           </div>
-          <span className="admin-badge-text">Dimple Studio · Owner Access</span>
+          <span className="admin-badge-text">Dimplverse Studio · Owner Access</span>
         </div>
 
         <h1 className="admin-login-title">Creator Control Room</h1>
@@ -71,7 +71,7 @@ export default function AdminLogin() {
                 type="email"
                 required
                 className="admin-input"
-                placeholder="dimple@dimplesworld.com"
+                placeholder="owner@dimplverse.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

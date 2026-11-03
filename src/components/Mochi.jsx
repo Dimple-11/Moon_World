@@ -143,7 +143,7 @@ const GREETINGS = {
   '/beyond-code': "The creative side of her world. I can point you to the parts you might enjoy.",
 };
 
-const DEFAULT_GREETING = "Hello. I'm Mochi, a quiet guide to Dimple's world. Ask about her projects, skills, experience, or how to reach her.";
+const DEFAULT_GREETING = "Hello. I'm Mochi, a quiet guide to Dimplverse. Ask about her projects, skills, experience, or how to reach her.";
 
 const STARTERS = {
   '/projects': [
@@ -429,10 +429,10 @@ export default function Mochi() {
             type="button"
             className="mochi-trigger-character"
             onClick={() => setIsOpen(true)}
-            aria-label="Open Mochi, a quiet guide to Dimple's portfolio"
+            aria-label="Open Mochi, a quiet guide to Dimplverse"
             aria-haspopup="dialog"
             aria-expanded={false}
-            title="Mochi, your guide to Dimple's world"
+            title="Mochi, your guide to Dimplverse"
           >
             <span className="mochi-avatar-glow" aria-hidden="true" />
             <MochiAvatarSVG state={catState} size={70} />
@@ -460,7 +460,7 @@ export default function Mochi() {
                   <span>Mochi</span>
                   <span className="mochi-badge-ai">Guide</span>
                 </div>
-                <div className="mochi-header-sub">A quiet guide to Dimple's world</div>
+                <div className="mochi-header-sub">A quiet guide to Dimplverse</div>
               </div>
             </div>
 

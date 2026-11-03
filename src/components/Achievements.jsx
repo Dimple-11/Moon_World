@@ -66,7 +66,7 @@ export default function Achievements() {
             <a
               href={personalInfo.github}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-secondary btn-sm"
             >
               <span>Explore Code Repositories</span>

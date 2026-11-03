@@ -2,11 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import InteractiveCharacter from '../components/InteractiveCharacter';
+import HomeSnapshot from '../components/HomeSnapshot';
 import {
   ArrowUpRight, Sparkles, Send, Award, Compass, Heart,
-  ArrowRight, FolderGit2, Briefcase, BookOpen, Image as ImageIcon
+  ArrowRight, FolderGit2, BookOpen
 } from 'lucide-react';
-import { personalInfo, projectsData, experienceData, currentlyExploring } from '../data/portfolioData';
+import { personalInfo, projectsData } from '../data/portfolioData';
 
 // Animation variants
 const containerVariants = {
@@ -123,7 +124,7 @@ export default function HomePage() {
                     </motion.span>
                   ))}
                 </motion.span>
-                , an Information Technology undergraduate at <strong>IGDTUW</strong>. {personalInfo.tagline} I enjoy building AI-powered applications, full-stack products, and creative digital experiences that solve real-world problems.
+                , an Information Technology undergraduate at <strong>IGDTUW</strong>. I enjoy building AI-powered applications, full-stack products, and creative digital experiences that solve real-world problems.
               </p>
             </motion.div>
 
@@ -185,6 +186,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* =========================================
+          HOME SNAPSHOT BENTO
+          ========================================= */}
+      <HomeSnapshot />
 
       {/* =========================================
           FEATURED PROJECTS PREVIEW STRIP
@@ -251,72 +257,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* =========================================
-          CREATIVE UNIVERSE DUO: WRITING & SCRAPBOOK
-          ========================================= */}
-      <section className="section-wrap home-preview-section alt-bg">
-        <div className="section-container">
-          <div className="preview-duo-grid">
-            {/* Left: Recent Milestones */}
-            <motion.div
-              className="preview-card-box"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55 }}
-            >
-              <div className="preview-card-header">
-                <Briefcase size={18} className="preview-icon-accent" />
-                <h3 className="preview-box-title">Recent Milestones</h3>
-              </div>
-              <div className="preview-timeline-mini">
-                {experienceData.slice(0, 3).map((exp, i) => (
-                  <div key={i} className="mini-exp-row">
-                    <span className="mini-exp-bullet" />
-                    <div>
-                      <div className="mini-exp-role">{exp.role}</div>
-                      <div className="mini-exp-org">{exp.organization} · {exp.period}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Link to="/experience" className="preview-link-btn">
-                <span>View Full Journey</span>
-                <ArrowRight size={14} />
-              </Link>
-            </motion.div>
-
-            {/* Right: Currently Exploring Strip */}
-            <motion.div
-              className="preview-card-box"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55 }}
-            >
-              <div className="preview-card-header">
-                <Compass size={18} className="preview-icon-accent" />
-                <h3 className="preview-box-title">Currently Exploring</h3>
-              </div>
-              <p className="preview-box-desc">
-                Frontiers I am actively experimenting with in AI, agentic systems, and distributed backends.
-              </p>
-              <div className="exploring-tags-grid">
-                {currentlyExploring.map((exp, i) => (
-                  <div key={i} className="exploring-chip">
-                    <span className="chip-bullet" />
-                    <span>{exp.title}</span>
-                  </div>
-                ))}
-              </div>
-              <Link to="/beyond-code" className="preview-link-btn">
-                <span>Discover Creative Playground</span>
-                <ArrowRight size={14} />
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

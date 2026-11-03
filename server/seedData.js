@@ -1,4 +1,5 @@
 import { initialBlogs, initialGallery } from '../src/data/fallbackContent.js';
+import { githubUrl, linkedinUrl, resumeUrl } from '../src/data/links.js';
 
 export { initialBlogs, initialGallery };
 
@@ -29,16 +30,17 @@ export const inMemoryStore = {
   gallery: [...initialGallery],
   siteSettings: {
     site: {
-      brandName: "DIMPLE'S WORLD",
-      brandSubtitle: 'THE CREATIVE UNIVERSE OF DIMPLE',
-      tagline: 'Where code meets creativity, and every pixel has a story.',
+      brandName: 'DIMPLVERSE',
+      brandSubtitle: 'A universe, made of curiosity.',
+      tagline: 'A universe, made of curiosity.',
       email: 'bhdimple06@gmail.com',
-      github: 'https://github.com/Dimple-11',
-      linkedin: 'https://linkedin.com/in/dimple-11'
+      github: githubUrl,
+      linkedin: linkedinUrl,
+      resumeUrl
     },
     announcement: { enabled: false, text: '', link: '' },
     mochiConfig: {
-      greeting: "Nyaa~! I'm Mochi, Dimple's AI portfolio companion! Ask me anything about her projects, tech stack, or campus journey!",
+      greeting: "Hello, I'm Mochi, the quiet guide to Dimplverse. Ask about Dimple's projects, skills, experience, or how to reach her.",
       personalityModifier: 'cheerful, helpful, playful anime cat',
       enabled: true
     }

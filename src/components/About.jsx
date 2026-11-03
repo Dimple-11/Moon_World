@@ -95,7 +95,11 @@ export default function About() {
           {aboutHighlights.map((item, idx) => {
             const Icon = iconMap[idx] || Code2;
             return (
-              <div key={idx} className="about-feature-card">
+              <div
+                key={idx}
+                className="about-feature-card"
+                id={item.title === 'Education' ? 'education' : undefined}
+              >
                 <div className="feature-card-header">
                   <div className="feature-icon-wrapper">
                     <Icon size={20} />

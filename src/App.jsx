@@ -44,12 +44,86 @@ const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 
 import { logDeveloperGreeting, triggerSakuraBurst } from './utils/sakuraBurst';
 
-// Scroll to top on route change
+// Scroll to top on route change, or to the requested hash once a lazy page mounts.
 function RouteScrollTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [pathname]);
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      return undefined;
+    }
+
+    const targetId = decodeURIComponent(hash.slice(1));
+    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const htmlStyle = document.documentElement.style;
+    const originalScrollBehavior = htmlStyle.scrollBehavior;
+    let cancelled = false;
+    let attempts = 0;
+    let ticks = 0;
+    let timer;
+
+    const scrollNow = (element, smooth) => {
+      if (!smooth) {
+        // CSS sets `scroll-behavior: smooth` globally, so `behavior: 'auto'`
+        // would still animate and get restarted by the next correction.
+        htmlStyle.scrollBehavior = 'auto';
+      }
+      element.scrollIntoView({
+        behavior: smooth ? 'smooth' : 'auto',
+        block: 'start'
+      });
+    };
+
+    const restoreScrollBehavior = () => {
+      htmlStyle.scrollBehavior = originalScrollBehavior;
+    };
+
+    // Lazy pages mount late and can stay too short to scroll until their
+    // content lays out. Keep checking the real offset so we land on the
+    // anchor even when the page grows after the first scroll attempt.
+    const align = () => {
+      if (cancelled) return;
+
+      const element = document.getElementById(targetId);
+      if (!element) {
+        // Lazy route chunks can take a few seconds to compile on a cold dev
+        // server, so keep waiting rather than giving up after one second.
+        attempts += 1;
+        if (attempts < 120) {
+          timer = window.setTimeout(align, 50);
+        }
+        return;
+      }
+
+      const marginTop = parseFloat(window.getComputedStyle(element).scrollMarginTop) || 0;
+      const isAligned = Math.abs(element.getBoundingClientRect().top - marginTop) <= 2;
+
+      // Let the first smooth attempt play; switch to instant corrections only
+      // after it has had a moment, so the initial motion stays soft.
+      if (!isAligned && (ticks === 0 || ticks >= 8)) {
+        scrollNow(element, ticks === 0 && behavior === 'smooth');
+      }
+
+      ticks += 1;
+      if (!isAligned && ticks < 30) {
+        timer = window.setTimeout(align, 80);
+      } else {
+        restoreScrollBehavior();
+      }
+    };
+
+    timer = window.setTimeout(align, 0);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      restoreScrollBehavior();
+    };
+  }, [pathname, hash]);
+
   return null;
 }
 

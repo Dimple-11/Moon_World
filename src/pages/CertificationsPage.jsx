@@ -41,7 +41,7 @@ export default function CertificationsPage() {
                     )}
                   </div>
                   {cert.credentialUrl && cert.credentialUrl !== '#' && (
-                    <a href={cert.credentialUrl} target="_blank" rel="noreferrer" className="cert-link-btn" aria-label={`View ${cert.name} credential`}>
+                    <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="cert-link-btn" aria-label={`View ${cert.name} credential`}>
                       <ExternalLink size={14} />
                     </a>
                   )}

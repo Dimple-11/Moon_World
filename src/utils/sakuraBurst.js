@@ -1,5 +1,7 @@
+import { githubUrl } from '../data/links';
+
 /**
- * sakuraBurst.js - Playful Easter Egg & Console Greeting for Dimple's World
+ * sakuraBurst.js - Playful Easter Egg & Console Greeting for Dimplverse
  */
 
 export function triggerSakuraBurst(originX = window.innerWidth / 2, originY = window.innerHeight / 2) {
@@ -91,10 +93,10 @@ export function logDeveloperGreeting() {
   ].join(';');
 
   console.log(
-    `%c🌸 Welcome to DIMPLE'S WORLD! 
+    `%c🌸 Welcome to DIMPLVERSE!
 ✦ Information Technology @ IGDTUW '28
 ✦ Exploring AI/ML, Full-Stack Architecture & Creative Technology
-✦ GitHub: https://github.com/Dimple-11
+✦ GitHub: ${githubUrl}
 ✦ Email: bhdimple06@gmail.com
 🐾 Mochi says: "Have fun exploring every pixel!"`,
     styles

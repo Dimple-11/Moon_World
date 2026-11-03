@@ -50,6 +50,7 @@ ABOUT DIMPLE
 - Email: ${personalInfo.email}
 - GitHub: ${personalInfo.github}
 - LinkedIn: ${personalInfo.linkedin}
+- Resume: ${personalInfo.resumeUrl}
 
 PROJECTS
 ${projects}
@@ -72,7 +73,7 @@ ${exploring}
 }
 
 function buildSystemPrompt(page = '/') {
-  return `You are Mochi, a calm and thoughtful guide living inside Dimple's portfolio, "Dimple's World".
+  return `You are Mochi, a calm and thoughtful guide living inside DIMPLVERSE, Dimple's portfolio.
 
 PERSONA
 - Warm, gentle and concise. You are a quiet companion, not a chatty widget.
@@ -104,11 +105,19 @@ function localReply(message, page = '/') {
   });
 
   if (/(hello|hi|hey|good morning|good evening)/.test(text) && text.length < 30) {
-    return "Hello. I'm Mochi, a quiet guide to Dimple's world. You can ask about her projects, skills, experience or how to reach her. 🌸";
+    return "Hello. I'm Mochi, a quiet guide to Dimplverse. You can ask about Dimple's projects, skills, experience or how to reach her. 🌸";
   }
 
-  if (/(resume|cv|curriculum)/.test(text)) {
-    return "Dimple's résumé is not published on the site yet. The Contact page is the simplest way to ask her for the latest copy.";
+  if (/(resume|cv|curriculum|download)/.test(text)) {
+    return `Dimple's resume is available here: ${personalInfo.resumeUrl}. It opens in a new tab, so you can keep browsing this page.`;
+  }
+
+  if (/(linkedin|connect professionally)/.test(text)) {
+    return `Dimple's LinkedIn profile is ${personalInfo.linkedin}. It opens in a new tab.`;
+  }
+
+  if (/(github|repository|repositories|source code)/.test(text)) {
+    return `You can see Dimple's code on GitHub: ${personalInfo.github}. It opens in a new tab.`;
   }
 
   if (/(contact|email|reach|hire|collab|message)/.test(text)) {

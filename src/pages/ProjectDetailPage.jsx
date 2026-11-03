@@ -36,13 +36,13 @@ export default function ProjectDetailPage() {
           <p className="page-hero-subtitle">{project.subtitle}</p>
           <div className="detail-action-row">
             {project.github && (
-              <a href={project.github} target="_blank" rel="noreferrer" className="btn btn-secondary btn-sm">
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-sm">
                 <GithubIcon size={15} />
                 <span>View Source</span>
               </a>
             )}
             {project.live && (
-              <a href={project.live} target="_blank" rel="noreferrer" className="btn btn-primary btn-sm">
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
                 <ExternalLink size={15} />
                 <span>Live Demo</span>
               </a>

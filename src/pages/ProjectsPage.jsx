@@ -85,12 +85,12 @@ export default function ProjectsPage() {
                       <ArrowRight size={14} />
                     </Link>
                     {proj.github && (
-                      <a href={proj.github} target="_blank" rel="noreferrer" className="project-icon-link" aria-label="GitHub">
+                      <a href={proj.github} target="_blank" rel="noopener noreferrer" className="project-icon-link" aria-label="GitHub">
                         <GithubIcon size={15} />
                       </a>
                     )}
                     {proj.live && (
-                      <a href={proj.live} target="_blank" rel="noreferrer" className="project-icon-link" aria-label="Live demo">
+                      <a href={proj.live} target="_blank" rel="noopener noreferrer" className="project-icon-link" aria-label="Live demo">
                         <ExternalLink size={15} />
                       </a>
                     )}

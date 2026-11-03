@@ -1,22 +1,25 @@
+import { resumeUrl, linkedinUrl, githubUrl } from './links.js';
+
 /**
  * portfolioData.js
- * Comprehensive structured dataset for DIMPLE'S WORLD – The Creative Universe of Dimple.
+ * Comprehensive structured dataset for DIMPLVERSE – The Creative Universe of Dimple.
  */
 
 export const personalInfo = {
   name: 'Dimple',
-  brandName: "DIMPLE'S WORLD",
-  brandSubtitle: 'THE CREATIVE UNIVERSE OF DIMPLE',
+  brandName: 'DIMPLVERSE',
+  brandSubtitle: 'A universe, made of curiosity.',
   title: 'Information Technology Undergraduate & Creative Technologist',
   institution: 'Indira Gandhi Delhi Technical University for Women (IGDTUW)',
   graduationYear: '2028',
   location: 'New Delhi, India',
   email: 'bhdimple06@gmail.com',
-  github: 'https://github.com/Dimple-11',
-  linkedin: 'https://linkedin.com/in/dimple-11',
+  github: githubUrl,
+  linkedin: linkedinUrl,
+  resumeUrl,
   codeforces: 'https://codeforces.com',
   leetcode: 'https://leetcode.com',
-  tagline: 'Where code meets creativity, and every pixel has a story.',
+  tagline: 'A universe, made of curiosity.',
   rotatingPhrases: [
     'AI/ML Explorer',
     'Full-Stack Developer',
@@ -140,7 +143,7 @@ export const projectsData = [
     category: 'AI / ML',
     shortDesc: 'Automated claim anomaly detection combining Tesseract OCR document parsing, NLP text feature extraction, and an ensemble XGBoost classifier.',
     tags: ['Python', 'XGBoost', 'Flask', 'FastAPI', 'NLP', 'Tesseract OCR'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: '94% Recall on Anomalies',
     featured: true,
@@ -159,7 +162,7 @@ export const projectsData = [
     category: 'Backend',
     shortDesc: 'Continuous news ingestion engine that aggregates unstructured feeds, computes keyword velocity metrics, and clusters emerging tech trends.',
     tags: ['Python', 'MongoDB', 'News APIs', 'RSS Feeds', 'Topic Clustering'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: 'Real-time Feed Indexing',
     featured: true,
@@ -178,7 +181,7 @@ export const projectsData = [
     category: 'NLP',
     shortDesc: 'Deep learning classification system using Bidirectional LSTM networks and dense word embeddings to capture context, slang, and sentiment polarity.',
     tags: ['Python', 'TensorFlow', 'LSTM', 'NLTK', 'Word2Vec'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: 'Deep Sequential Context',
     featured: false,
@@ -197,7 +200,7 @@ export const projectsData = [
     category: 'Data Science',
     shortDesc: 'Supervised classification model analyzing Fine Needle Aspirate (FNA) digitized cell characteristics to support early cancer diagnosis.',
     tags: ['Python', 'Scikit-learn', 'Machine Learning', 'Flask', 'Pandas'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: 'High Sensitivity Support',
     featured: false,
@@ -216,7 +219,7 @@ export const projectsData = [
     category: 'Full Stack',
     shortDesc: 'Voice-based conversational AI system breaking literacy and linguistic barriers for rural citizens seeking public scheme benefits.',
     tags: ['Speech-to-Text', 'LLMs', 'RAG', 'Text-to-Speech', 'FastAPI'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: 'Voice-First Multilingual',
     featured: true,
@@ -235,7 +238,7 @@ export const projectsData = [
     category: 'Backend',
     shortDesc: 'Cryptographic offline-first transaction system ensuring zero card data exposure and robust double-spend prevention.',
     tags: ['Node.js', 'Express', 'MongoDB', 'HMAC Tokens', 'Security'],
-    github: 'https://github.com/Dimple-11',
+    github: githubUrl,
     demo: null,
     metrics: 'Zero Card Leakage',
     featured: false,
@@ -397,6 +400,22 @@ export const currentlyExploring = [
   { title: 'Scalable Backends', desc: 'FastAPI, asynchronous workers, and low-latency database queries' }
 ];
 
+// Placeholder ideas for the Home "Building next" card — edit these freely.
+export const futureBuilds = [
+  {
+    title: 'Multilingual scheme navigator',
+    desc: 'A voice-first extension of Saathi Sewa that walks citizens through eligibility step by step.'
+  },
+  {
+    title: 'Personal research radar',
+    desc: 'An agentic upgrade to Trend Radar that turns daily papers into one short, ranked briefing.'
+  },
+  {
+    title: 'Accessible study companion',
+    desc: 'A local-LLM notes-to-flashcards tool for students with patchy internet access.'
+  }
+];
+
 // Knowledge base for Mochi AI Assistant
 export const mochiKnowledgeBase = [
   {
@@ -425,6 +444,10 @@ export const mochiKnowledgeBase = [
   },
   {
     keywords: ['contact', 'email', 'hire', 'reach', 'github', 'linkedin'],
-    answer: "You can reach Dimple directly at bhdimple06@gmail.com, connect on LinkedIn (linkedin.com/in/dimple-11), or check her GitHub (github.com/Dimple-11). You can also use the /contact page!"
+    answer: `You can reach Dimple directly at ${personalInfo.email}, connect on LinkedIn (${linkedinUrl}), or check her GitHub (${githubUrl}). You can also use the /contact page!`
+  },
+  {
+    keywords: ['resume', 'cv', 'curriculum', 'download'],
+    answer: `Dimple's resume is available here: ${resumeUrl}. It opens in a new tab.`
   }
 ];

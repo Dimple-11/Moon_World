@@ -64,7 +64,7 @@ export default function AdminSettings() {
     <div className="admin-page-container">
       <div className="admin-page-header-row">
         <div>
-          <h1 className="admin-page-title">Studio Settings &amp; Architecture</h1>
+          <h1 className="admin-page-title">Dimplverse Studio Settings &amp; Architecture</h1>
           <p className="admin-page-subtitle">Inspect database connections, AI model status, and account configuration.</p>
         </div>
 
@@ -80,8 +80,8 @@ export default function AdminSettings() {
           <div className="settings-card-header">
             <Settings size={20} className="settings-icon" />
             <div>
-              <h3>Public Site Identity</h3>
-              <p>Shown in the navbar, footer, page title and contact links</p>
+              <h3>Dimplverse Public Identity</h3>
+              <p>Shown across the navbar, footer, page title, contact and resume links</p>
             </div>
           </div>
 
@@ -109,6 +109,10 @@ export default function AdminSettings() {
             <div className="form-group">
               <label className="form-label" htmlFor="site-linkedin">LinkedIn URL</label>
               <input id="site-linkedin" className="form-input" value={form.linkedin || ''} onChange={updateField('linkedin')} maxLength={200} />
+            </div>
+            <div className="form-group settings-field-wide">
+              <label className="form-label" htmlFor="site-resume">Resume URL</label>
+              <input id="site-resume" className="form-input" value={form.resumeUrl || ''} onChange={updateField('resumeUrl')} maxLength={300} placeholder="https://…" />
             </div>
           </div>
 

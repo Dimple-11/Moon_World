@@ -56,7 +56,11 @@ export default function Skills() {
           {filteredData.map((catItem, idx) => {
             const Icon = categoryIcons[catItem.category] || Wrench;
             return (
-              <div key={idx} className="skill-category-card">
+              <div
+                key={idx}
+                className="skill-category-card"
+                id={catItem.category === 'Tools & DevOps' ? 'software' : undefined}
+              >
                 <div className="skill-card-top">
                   <div className="skill-category-icon-box">
                     <Icon size={22} />

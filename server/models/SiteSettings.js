@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { githubUrl, linkedinUrl, resumeUrl } from '../../src/data/links.js';
 
 const siteSettingsSchema = new mongoose.Schema({
   key: {
@@ -7,12 +8,13 @@ const siteSettingsSchema = new mongoose.Schema({
     default: 'global_settings',
   },
   site: {
-    brandName: { type: String, default: "DIMPLE'S WORLD" },
-    brandSubtitle: { type: String, default: 'THE CREATIVE UNIVERSE OF DIMPLE' },
-    tagline: { type: String, default: 'Where code meets creativity, and every pixel has a story.' },
+    brandName: { type: String, default: 'DIMPLVERSE' },
+    brandSubtitle: { type: String, default: 'A universe, made of curiosity.' },
+    tagline: { type: String, default: 'A universe, made of curiosity.' },
     email: { type: String, default: 'bhdimple06@gmail.com' },
-    github: { type: String, default: 'https://github.com/Dimple-11' },
-    linkedin: { type: String, default: 'https://linkedin.com/in/dimple-11' },
+    github: { type: String, default: githubUrl },
+    linkedin: { type: String, default: linkedinUrl },
+    resumeUrl: { type: String, default: resumeUrl },
   },
   announcement: {
     enabled: { type: Boolean, default: false },
@@ -20,7 +22,7 @@ const siteSettingsSchema = new mongoose.Schema({
     link: { type: String, default: '' },
   },
   mochiConfig: {
-    greeting: { type: String, default: "Nyaa~! I'm Mochi, Dimple's AI portfolio companion! Ask me anything about her projects, tech stack, or campus journey!" },
+    greeting: { type: String, default: "Hello, I'm Mochi, the quiet guide to Dimplverse. Ask about Dimple's projects, skills, experience, or how to reach her." },
     personalityModifier: { type: String, default: 'cheerful, helpful, playful anime cat' },
     enabled: { type: Boolean, default: true },
   },

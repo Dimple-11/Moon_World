@@ -15,7 +15,7 @@ export default function AdminLayout() {
     return (
       <div className="admin-loading-screen">
         <Sparkles size={28} className="admin-spin-icon" />
-        <p>Loading Dimple Studio...</p>
+        <p>Loading Dimplverse Studio...</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function AdminLayout() {
               <span>D</span>
             </div>
             <div>
-              <div className="admin-brand-title">Dimple Studio</div>
+              <div className="admin-brand-title">Dimplverse Studio</div>
               <div className="admin-brand-badge">Private Owner Suite</div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function AdminLayout() {
       <main className="admin-main-viewport">
         <header className="admin-topbar">
           <div className="admin-breadcrumbs">
-            <span>Dimple Studio</span>
+            <span>Dimplverse Studio</span>
             <span className="breadcrumb-separator">/</span>
             <span className="breadcrumb-current">Management Console</span>
           </div>

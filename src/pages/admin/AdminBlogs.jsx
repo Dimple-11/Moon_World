@@ -125,7 +125,7 @@ export default function AdminBlogs() {
                       <a
                         href={`/blog/${blog.slug}`}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="action-pill-btn"
                         title="View live post"
                       >

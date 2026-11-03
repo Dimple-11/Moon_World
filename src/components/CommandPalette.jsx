@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Home, User, Code2, FolderGit2, Briefcase, Trophy, Award, Palette, Mail, Sun, Moon, Music, Sparkles, X, ArrowRight, BookOpen, Image } from 'lucide-react';
+import { Search, Home, User, Code2, FolderGit2, Briefcase, Trophy, Award, Palette, Mail, Sun, Moon, Music, Sparkles, X, ArrowRight, BookOpen, Image, FileText } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from './BrandIcons';
 import { personalInfo } from '../data/portfolioData';
+
+const openExternal = (url) => window.open(url, '_blank', 'noopener,noreferrer');
 
 export default function CommandPalette({ isOpen, onClose, theme, onToggleTheme, onOpenMusic }) {
   const [query, setQuery] = useState('');
@@ -10,7 +13,7 @@ export default function CommandPalette({ isOpen, onClose, theme, onToggleTheme, 
   const inputRef = useRef(null);
 
   const commandItems = [
-    { label: 'Go to Home', desc: 'Hero & Character Universe', icon: Home, action: () => navigate('/') },
+    { label: 'Go to Home', desc: 'The Dimplverse hero & character universe', icon: Home, action: () => navigate('/') },
     { label: 'Go to About Me', desc: 'Behind the Pixels & Background', icon: User, action: () => navigate('/about') },
     { label: 'Go to Technical Skills', desc: 'Programming, ML & Frameworks', icon: Code2, action: () => navigate('/skills') },
     { label: 'Go to Projects', desc: 'AI Systems & Full-Stack Creations', icon: FolderGit2, action: () => navigate('/projects') },
@@ -21,6 +24,24 @@ export default function CommandPalette({ isOpen, onClose, theme, onToggleTheme, 
     { label: 'Go to Certifications', desc: 'Hugging Face & ML Specializations', icon: Award, action: () => navigate('/certifications') },
     { label: 'Go to Beyond Code', desc: 'Media, Writing & Leadership', icon: Palette, action: () => navigate('/beyond-code') },
     { label: 'Go to Contact', desc: 'Direct Note & Inquiries', icon: Mail, action: () => navigate('/contact') },
+    {
+      label: 'Open resume',
+      desc: 'View Dimple’s resume on Google Drive (new tab)',
+      icon: FileText,
+      action: () => openExternal(personalInfo.resumeUrl)
+    },
+    {
+      label: 'Open LinkedIn Profile',
+      desc: 'Connect professionally (new tab)',
+      icon: LinkedinIcon,
+      action: () => openExternal(personalInfo.linkedin)
+    },
+    {
+      label: 'Open GitHub Profile',
+      desc: 'See Dimple’s code and projects (new tab)',
+      icon: GithubIcon,
+      action: () => openExternal(personalInfo.github)
+    },
     {
       label: `Switch Theme to ${theme === 'dark' ? 'Sakura Dream' : 'Midnight Sakura'}`,
       desc: 'Toggle visual theme',

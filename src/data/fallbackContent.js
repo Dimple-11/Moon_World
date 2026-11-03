@@ -80,10 +80,10 @@ Building this under time constraints taught me the invaluable importance of data
     updatedAt: new Date('2024-12-02'),
     coverImage: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80',
     seoTitle: 'Responsive Canvas Sprite Sheets: 145 Frames at 60 FPS',
-    seoDescription: 'How we built the high-performance sprite atlas engine behind Dimple\'s World hero section.',
+    seoDescription: 'How we built the high-performance sprite atlas engine behind the Dimplverse hero section.',
     content: `## Why Not Just Use Video?
 
-When designing the hero section for **Dimple's World**, I wanted an anime character that turns her gaze smoothly toward your cursor.
+When designing the hero section for **Dimplverse**, I wanted an anime character that turns her gaze smoothly toward your cursor.
 
 Video elements have fundamental limitations for high-frequency cursor tracking:
 - \`HTMLVideoElement.currentTime\` updates are throttled by browser rendering engines to keyframes or 100ms intervals.

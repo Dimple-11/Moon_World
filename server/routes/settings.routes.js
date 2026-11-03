@@ -3,16 +3,18 @@ import { SiteSettings } from '../models/SiteSettings.js';
 import { requireAuth } from '../middleware/auth.js';
 import { connectDB } from '../db.js';
 import { inMemoryStore } from '../seedData.js';
+import { githubUrl, linkedinUrl, resumeUrl } from '../../src/data/links.js';
 
 const router = Router();
 
 export const DEFAULT_SITE_SETTINGS = {
-  brandName: "DIMPLE'S WORLD",
-  brandSubtitle: 'THE CREATIVE UNIVERSE OF DIMPLE',
-  tagline: 'Where code meets creativity, and every pixel has a story.',
+  brandName: 'DIMPLVERSE',
+  brandSubtitle: 'A universe, made of curiosity.',
+  tagline: 'A universe, made of curiosity.',
   email: 'bhdimple06@gmail.com',
-  github: 'https://github.com/Dimple-11',
-  linkedin: 'https://linkedin.com/in/dimple-11',
+  github: githubUrl,
+  linkedin: linkedinUrl,
+  resumeUrl,
 };
 
 function mergeSettings(settings) {
@@ -54,7 +56,7 @@ router.get('/', async (req, res) => {
 // PUT /api/settings - Owner only
 router.put('/', requireAuth, async (req, res) => {
   try {
-    const { brandName, brandSubtitle, tagline, email, github, linkedin } = req.body || {};
+    const { brandName, brandSubtitle, tagline, email, github, linkedin, resumeUrl: resumeUrlInput } = req.body || {};
     const site = {
       brandName: String(brandName || DEFAULT_SITE_SETTINGS.brandName).trim().slice(0, 80),
       brandSubtitle: String(brandSubtitle || DEFAULT_SITE_SETTINGS.brandSubtitle).trim().slice(0, 120),
@@ -62,6 +64,7 @@ router.put('/', requireAuth, async (req, res) => {
       email: String(email || DEFAULT_SITE_SETTINGS.email).trim().slice(0, 120),
       github: String(github || DEFAULT_SITE_SETTINGS.github).trim().slice(0, 200),
       linkedin: String(linkedin || DEFAULT_SITE_SETTINGS.linkedin).trim().slice(0, 200),
+      resumeUrl: String(resumeUrlInput || DEFAULT_SITE_SETTINGS.resumeUrl).trim().slice(0, 300),
     };
 
     const hasDB = await connectDB();

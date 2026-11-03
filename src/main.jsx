@@ -6,6 +6,7 @@ import './styles/theme.css';
 import './styles/features/layout.css';
 import './styles/features/navbar.css';
 import './styles/features/sections.css';
+import './styles/features/snapshot.css';
 import './styles/features/utilities.css';
 import './styles/features/pages.css';
 import './styles/features/editorial.css';

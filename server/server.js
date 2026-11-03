@@ -38,7 +38,7 @@ app.set('trust proxy', 1);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    app: "Dimple's World Studio Backend",
+    app: 'Dimplverse Studio Backend',
     timestamp: new Date().toISOString(),
     database: getDBStatus(),
     geminiConfigured: !!(process.env.GEMINI_API_KEY && !process.env.GEMINI_API_KEY.includes('YOUR_')),
@@ -71,6 +71,6 @@ app.use((req, res, next) => {
 
 // Start Server
 app.listen(PORT, async () => {
-  console.log(`🌸 [Dimple's World Server] Listening on http://localhost:${PORT}`);
+  console.log(`🌸 [Dimplverse Server] Listening on http://localhost:${PORT}`);
   await connectDB();
 });

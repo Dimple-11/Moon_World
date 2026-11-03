@@ -147,7 +147,7 @@ export default function Contact() {
                 <a
                   href={personalInfo.github}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="social-pill-btn"
                   title="GitHub Profile"
                 >
@@ -157,7 +157,7 @@ export default function Contact() {
                 <a
                   href={personalInfo.linkedin}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="social-pill-btn"
                   title="LinkedIn Profile"
                 >
